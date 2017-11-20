@@ -8,39 +8,55 @@
 
 import UIKit
 import WebKit
+import FacebookShare
 
 class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
 
     @IBOutlet weak var webView: WKWebView!
     let html_domain = "www.hkml.net"
     let mainUrl = "http://www.hkml.net/Discuz/index.php"
+    let touchSwipe = "https://raw.githubusercontent.com/mattbryson/TouchSwipe-Jquery-Plugin/master/jquery.touchSwipe.min.js"
+    let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp.js"
+    let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
     
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var forwardButton: UIBarButtonItem!
-    @IBOutlet weak var reloadButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var navigationBar: UINavigationBar!
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
+        let config = webView.configuration
+        
         var jquery = try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
         jquery = (jquery!) + " $j=jQuery.noConflict();";
         let jqScript = WKUserScript(source: jquery!, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         
-        let config = webView.configuration
-        
         config.userContentController.addUserScript(jqScript)
         
-        let scriptURL = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp.js?" + String(arc4random())
-        let scriptContent = try? String(contentsOf: URL(string: scriptURL)!, encoding: String.Encoding.utf8)
+        let jsTouchSwipe = try? String(contentsOf: URL(string: touchSwipe + "?" + String(arc4random()))!, encoding: String.Encoding.utf8)
+        let sTouchSwipe = WKUserScript(source: jsTouchSwipe!, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         
-        let script = WKUserScript(source: scriptContent!, injectionTime: .atDocumentStart, forMainFrameOnly: true)
+        config.userContentController.addUserScript(sTouchSwipe)
+        
+        let cfEnc = CFStringEncodings.big5_HKSCS_1999
+        let nsEnc = CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(cfEnc.rawValue))
+        let big5encoding = String.Encoding(rawValue: nsEnc) // String.Encoding
+        
+        let scriptURL = hkmlAppJs + "?" + String(arc4random())
+        let scriptContent = try? String(contentsOf: URL(string: scriptURL)!, encoding: big5encoding)
+        
+        let script = WKUserScript(source: scriptContent!, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         
         config.userContentController.addUserScript(script)
+        
         self.webView.navigationDelegate = self
         self.webView.uiDelegate = self
         
@@ -54,6 +70,14 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         backButton.isEnabled = false
         forwardButton.isEnabled = false
 
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.refreshWebView), for: UIControlEvents.valueChanged)
+        webView.scrollView.addSubview(refreshControl)
+    }
+    
+    @objc func refreshWebView(sender: UIRefreshControl) {
+        webView.reload()
+        sender.endRefreshing()
     }
 
     @IBAction func back(sender: UIBarButtonItem) {
@@ -64,8 +88,17 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         webView.goForward()
     }
     
-    @IBAction func reload(sender: UIBarButtonItem) {
-        let request = URLRequest(url:webView.url!)
+    @IBAction func share(sender: UIBarButtonItem) {
+        let activityViewController = UIActivityViewController(
+            activityItems: [webView.url ?? ""],
+            applicationActivities:nil)
+        
+        present(activityViewController, animated: true, completion: nil)
+        
+    }
+    
+    @IBAction func home(sender: UIBarButtonItem) {
+        let request = URLRequest(url: URL(string:mainUrl)!)
         webView.load(request)
     }
     
@@ -88,30 +121,19 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
             
             titleLabel.text = webView.title
             
-            let scriptURL = "http://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp-end.js?" + String(arc4random())
-            let scriptContent = try? String(contentsOf: URL(string: scriptURL)!, encoding: String.Encoding.utf8)
-            webView.evaluateJavaScript(scriptContent!)
-        }
-        if (keyPath == "facebookshare") {
-            
-            let activityViewController = UIActivityViewController(
-                activityItems: ["Share on facebook"],
-                applicationActivities:nil)
-            
-            present(activityViewController, animated: true, completion: nil)
         }
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         progressView.setProgress(0.0, animated: false)
         
-        //let scriptURL = "http://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp-end.js?" + String(arc4random())
-        //let scriptContent = try? String(contentsOf: URL(string: scriptURL)!, encoding: String.Encoding.utf8)
-        //webView.evaluateJavaScript(scriptContent!)
     }
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        
+        NSLog(error.localizedDescription)
+        
+        let alert = UIAlertController(title: "Error", message: "Network problem", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
@@ -122,23 +144,25 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         if (navigationAction.navigationType == WKNavigationType.linkActivated) {
             if ((navigationAction.request.url?.absoluteString.lowercased().hasPrefix("facebookshare:"))!) {
                 let str = navigationAction.request.url?.absoluteString ?? ""
-                NSLog(str)
                 
                 let index = str.index(str.startIndex, offsetBy: 14)
                 let shareurl = String(str[index...])
-                // todo: still need to remove the facebook sharer URL prefix
-                // and convert the "&amp;" to "&"
-                // todo: how to make the FB available in the share UI
                 
                 NSLog(shareurl)
                 
-                let url = URL(string: shareurl)
+                /*
+                let linkShareCnt = LinkShareContent(url: URL(string:shareurl)!)
+                
+                try! ShareDialog.show(from: self, content: linkShareCnt)
+                */
                 let activityViewController = UIActivityViewController(
-                    activityItems: [url ?? ""],
-                    applicationActivities: nil)
+                    activityItems: [URL(string: shareurl) ?? ""],
+                    applicationActivities:nil)
                 
                 present(activityViewController, animated: true, completion: nil)
+
                 decisionHandler(WKNavigationActionPolicy.cancel)
+                
             } else if (!(navigationAction.request.url?.host!.lowercased().hasPrefix(html_domain))!) {
                 UIApplication.shared.open(navigationAction.request.url!)
                 decisionHandler(WKNavigationActionPolicy.cancel)

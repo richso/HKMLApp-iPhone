@@ -14,6 +14,10 @@
 		0E0EDC951FB0088000EA7CC0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EDC931FB0088000EA7CC0 /* LaunchScreen.storyboard */; };
 		0E0EDCA01FB0088100EA7CC0 /* HKMLAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0EDC9F1FB0088100EA7CC0 /* HKMLAppTests.swift */; };
 		0E0EDCAB1FB0088100EA7CC0 /* HKMLAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0EDCAA1FB0088100EA7CC0 /* HKMLAppUITests.swift */; };
+		0E379ECB1FB969290027B19C /* home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E379EC91FB969280027B19C /* home@2x.png */; };
+		0E379ECC1FB969290027B19C /* home@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E379ECA1FB969290027B19C /* home@3x.png */; };
+		0E379ECF1FB9746A0027B19C /* share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E379ECD1FB974690027B19C /* share@2x.png */; };
+		0E379ED01FB9746A0027B19C /* share@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E379ECE1FB9746A0027B19C /* share@3x.png */; };
 		0EF7BA3B1FB2EB58008FCB04 /* forward@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF7BA351FB2EB57008FCB04 /* forward@3x.png */; };
 		0EF7BA3C1FB2EB58008FCB04 /* refresh@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF7BA361FB2EB57008FCB04 /* refresh@3x.png */; };
 		0EF7BA3D1FB2EB58008FCB04 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF7BA371FB2EB57008FCB04 /* forward@2x.png */; };
@@ -57,6 +61,10 @@
 		0E0EDCA61FB0088100EA7CC0 /* HKMLAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HKMLAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E0EDCAA1FB0088100EA7CC0 /* HKMLAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HKMLAppUITests.swift; sourceTree = "<group>"; };
 		0E0EDCAC1FB0088100EA7CC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E379EC91FB969280027B19C /* home@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "home@2x.png"; path = "images/home@2x.png"; sourceTree = "<group>"; };
+		0E379ECA1FB969290027B19C /* home@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "home@3x.png"; path = "images/home@3x.png"; sourceTree = "<group>"; };
+		0E379ECD1FB974690027B19C /* share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "share@2x.png"; path = "images/share@2x.png"; sourceTree = "<group>"; };
+		0E379ECE1FB9746A0027B19C /* share@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "share@3x.png"; path = "images/share@3x.png"; sourceTree = "<group>"; };
 		0EF7BA351FB2EB57008FCB04 /* forward@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@3x.png"; path = "images/forward@3x.png"; sourceTree = "<group>"; };
 		0EF7BA361FB2EB57008FCB04 /* refresh@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "refresh@3x.png"; path = "images/refresh@3x.png"; sourceTree = "<group>"; };
 		0EF7BA371FB2EB57008FCB04 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@2x.png"; path = "images/forward@2x.png"; sourceTree = "<group>"; };
@@ -158,6 +166,10 @@
 		0EF7BA341FB2EB41008FCB04 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E379ECD1FB974690027B19C /* share@2x.png */,
+				0E379ECE1FB9746A0027B19C /* share@3x.png */,
+				0E379EC91FB969280027B19C /* home@2x.png */,
+				0E379ECA1FB969290027B19C /* home@3x.png */,
 				0EF7BA3A1FB2EB58008FCB04 /* back@2x.png */,
 				0EF7BA391FB2EB58008FCB04 /* back@3x.png */,
 				0EF7BA371FB2EB57008FCB04 /* forward@2x.png */,
@@ -309,10 +321,14 @@
 			files = (
 				0E0EDC951FB0088000EA7CC0 /* LaunchScreen.storyboard in Resources */,
 				0EF7BA3E1FB2EB58008FCB04 /* refresh@2x.png in Resources */,
+				0E379ECC1FB969290027B19C /* home@3x.png in Resources */,
 				0EF7BA3F1FB2EB58008FCB04 /* back@3x.png in Resources */,
 				0EF7BA3B1FB2EB58008FCB04 /* forward@3x.png in Resources */,
 				0EF7BA3D1FB2EB58008FCB04 /* forward@2x.png in Resources */,
+				0E379ECB1FB969290027B19C /* home@2x.png in Resources */,
+				0E379ED01FB9746A0027B19C /* share@3x.png in Resources */,
 				0EF7BA401FB2EB58008FCB04 /* back@2x.png in Resources */,
+				0E379ECF1FB9746A0027B19C /* share@2x.png in Resources */,
 				0E0EDC921FB0088000EA7CC0 /* Assets.xcassets in Resources */,
 				0EF7BA3C1FB2EB58008FCB04 /* refresh@3x.png in Resources */,
 				0E0EDC901FB0088000EA7CC0 /* Main.storyboard in Resources */,
@@ -673,6 +689,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D86T58VH7H;
 				INFOPLIST_FILE = HKMLApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = netrogen.HKMLApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -689,6 +706,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D86T58VH7H;
 				INFOPLIST_FILE = HKMLApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = netrogen.HKMLApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
