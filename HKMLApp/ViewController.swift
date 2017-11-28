@@ -18,16 +18,31 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     let touchSwipe = "https://raw.githubusercontent.com/mattbryson/TouchSwipe-Jquery-Plugin/master/jquery.touchSwipe.min.js"
     let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp.js"
     let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
-    
-    @IBOutlet weak var titleLabel: UILabel!
+    var targetUrl = ""
     
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var forwardButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
-    @IBOutlet weak var navigationBar: UINavigationBar!
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
+    }
+    
+    var detailItem: MasterViewController.Model? {
+        didSet {
+            // Update the view.
+            loadWebview()
+        }
+    }
+    
+    func loadWebview() {
+        var urlstr = ""
+        if ((detailItem) == nil) {
+            urlstr = mainUrl
+        } else {
+            urlstr = (detailItem?.href)!
+        }
+        targetUrl = urlstr
     }
     
     override func viewDidLoad() {
@@ -65,7 +80,11 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         
         webView.addObserver(self, forKeyPath: "title", options: .new, context: nil)
         
-        webView.load(URLRequest(url:URL(string:mainUrl)!))
+        if (targetUrl == "") {
+            targetUrl = mainUrl
+        }
+        
+        webView.load(URLRequest(url:URL(string:targetUrl)!))
         
         backButton.isEnabled = false
         forwardButton.isEnabled = false
@@ -118,9 +137,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         }
         if (keyPath == "title") {
             title = webView.title
-            
-            titleLabel.text = webView.title
-            
         }
     }
     
