@@ -21,6 +21,7 @@
 		0E6607261FCBB77F00B168ED /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6607231FCBB77F00B168ED /* MasterViewController.swift */; };
 		0E6607271FCBB77F00B168ED /* TopModelsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6607241FCBB77F00B168ED /* TopModelsTableViewCell.swift */; };
 		0E6607281FCBB77F00B168ED /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6607251FCBB77F00B168ED /* UIImageViewExtension.swift */; };
+		0E9C3A191FCE8762007F79C0 /* UIResponder_ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C3A181FCE8762007F79C0 /* UIResponder_ext.swift */; };
 		0EA162281FCC86D4000819AC /* splash_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA162261FCC86D3000819AC /* splash_icon@3x.png */; };
 		0EA162291FCC86D4000819AC /* splash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA162271FCC86D3000819AC /* splash_icon@2x.png */; };
 		0EF7BA3B1FB2EB58008FCB04 /* forward@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF7BA351FB2EB57008FCB04 /* forward@3x.png */; };
@@ -73,6 +74,7 @@
 		0E6607231FCBB77F00B168ED /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		0E6607241FCBB77F00B168ED /* TopModelsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopModelsTableViewCell.swift; sourceTree = "<group>"; };
 		0E6607251FCBB77F00B168ED /* UIImageViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
+		0E9C3A181FCE8762007F79C0 /* UIResponder_ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIResponder_ext.swift; sourceTree = "<group>"; };
 		0EA162261FCC86D3000819AC /* splash_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "splash_icon@3x.png"; path = "images/splash_icon@3x.png"; sourceTree = "<group>"; };
 		0EA162271FCC86D3000819AC /* splash_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "splash_icon@2x.png"; path = "images/splash_icon@2x.png"; sourceTree = "<group>"; };
 		0EF7BA351FB2EB57008FCB04 /* forward@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@3x.png"; path = "images/forward@3x.png"; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				0E0EDC8A1FB0088000EA7CC0 /* AppDelegate.swift */,
 				0E6607231FCBB77F00B168ED /* MasterViewController.swift */,
 				0E0EDC8C1FB0088000EA7CC0 /* ViewController.swift */,
+				0E9C3A181FCE8762007F79C0 /* UIResponder_ext.swift */,
 				0E6607241FCBB77F00B168ED /* TopModelsTableViewCell.swift */,
 				0E6607251FCBB77F00B168ED /* UIImageViewExtension.swift */,
 				0E0EDC8E1FB0088000EA7CC0 /* Main.storyboard */,
@@ -535,6 +538,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E9C3A191FCE8762007F79C0 /* UIResponder_ext.swift in Sources */,
 				0E6607281FCBB77F00B168ED /* UIImageViewExtension.swift in Sources */,
 				0E0EDC8D1FB0088000EA7CC0 /* ViewController.swift in Sources */,
 				0E6607271FCBB77F00B168ED /* TopModelsTableViewCell.swift in Sources */,

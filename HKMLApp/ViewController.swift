@@ -10,7 +10,8 @@ import UIKit
 import WebKit
 import FacebookShare
 
-class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
+class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
+{
 
     @IBOutlet weak var webView: WKWebView!
     let html_domain = "www.hkml.net"
@@ -24,6 +25,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     @IBOutlet weak var forwardButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
     
+    //var userContentController : WKUserContentController!
+
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
@@ -42,14 +45,43 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         } else {
             urlstr = (detailItem?.href)!
         }
+        
+        NSLog("@loadurl: " + urlstr)
+        
         targetUrl = urlstr
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        // store the cookie to default persistent store
+        WKWebsiteDataStore.default().httpCookieStore.getAllCookies(self.saveCookies)
+        
+        super.viewWillDisappear(animated)
+    }
+    
+    func saveCookies(cookies: [HTTPCookie]) -> Void {
+        
+        var dic = Dictionary<String, Any>()
+        
+        for cookie in cookies {
+            dic[cookie.name] = cookie.properties
+        }
+        
+        UserDefaults.standard.set(dic, forKey:"cookies")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let config = webView.configuration
+        NSLog("@viewDidLoad")
         
+        let config = webView.configuration
+        //userContentController = WKUserContentController()
+        //config.userContentController = userContentController
+        
+        //config.userContentController.add(self, name: "hkmlAppInput")
+
         var jquery = try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
         jquery = (jquery!) + " $j=jQuery.noConflict();";
         let jqScript = WKUserScript(source: jquery!, injectionTime: .atDocumentStart, forMainFrameOnly: false)
@@ -84,7 +116,27 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
             targetUrl = mainUrl
         }
         
-        webView.load(URLRequest(url:URL(string:targetUrl)!))
+        NSLog("@didload: " + targetUrl)
+        
+        // todo: retrieve cookies from store
+        // todo: add the cookie header to store
+        let cookies_tmp = UserDefaults.standard.value(forKey: "cookies")
+        
+        if (cookies_tmp != nil) {
+            let cookies = cookies_tmp as! Dictionary<String, [HTTPCookiePropertyKey : Any]>
+        
+            for (key, properties) in cookies {
+                let cookie = HTTPCookie(properties: properties)
+                
+                NSLog("@key: " + key)
+                
+                WKWebsiteDataStore.default().httpCookieStore.setCookie(cookie!, completionHandler: nil)
+            }
+        }
+        
+        let urlRequest = URLRequest(url:URL(string:targetUrl)!)
+        
+        webView.load(urlRequest)
         
         backButton.isEnabled = false
         forwardButton.isEnabled = false
@@ -92,6 +144,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.refreshWebView), for: UIControlEvents.valueChanged)
         webView.scrollView.addSubview(refreshControl)
+        
     }
     
     @objc func refreshWebView(sender: UIRefreshControl) {
@@ -244,5 +297,16 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         
         present(alertController, animated: true, completion: nil)
     }
+    
+    
+    // WKScriptMessageHandler
+    
+    func userContentController(_ userContentController: WKUserContentController, didReceive: WKScriptMessage) {
+        
+        if (didReceive.name == "hkmlAppInput") {
+            // reserve for future use
+        }
+    }
+    
 }
 

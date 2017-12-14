@@ -12,7 +12,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="HKMLApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="webViewContainer" id="BYZ-38-t0r" customClass="ViewController" customModule="HKMLApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="AhJ-Q2-tTg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -86,7 +86,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="15" y="741"/>
+            <point key="canvasLocation" x="13.6" y="740.39408866995075"/>
         </scene>
         <!--Master-->
         <scene sceneID="d1s-TP-jMh">
@@ -120,7 +120,7 @@
                                 <connections>
                                     <outlet property="imageThumb" destination="RKM-GJ-fdc" id="VWC-KX-R51"/>
                                     <outlet property="title" destination="ELB-3g-qr3" id="CPB-in-hvk"/>
-                                    <segue destination="xAl-QD-DH4" kind="showDetail" identifier="showDetail" id="SDw-RA-LyV"/>
+                                    <segue destination="xAl-QD-DH4" kind="showDetail" identifier="showDetail" id="Iph-Hy-Cg6"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -190,6 +190,6 @@
         <image name="share.png" width="24" height="34"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="SDw-RA-LyV"/>
+        <segue reference="Iph-Hy-Cg6"/>
     </inferredMetricsTieBreakers>
 </document>

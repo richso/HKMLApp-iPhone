@@ -1,0 +1,6 @@
+framework module Pods_HKMLAppUITests {
+  umbrella header "Pods-HKMLAppUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
