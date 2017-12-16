@@ -1,6 +1,5 @@
 //
-//  UIImageExtension.swift
-//  test_master_detail
+//  UIImageViewExtension.swift
 //
 //  Created by Richard So on 25/11/2017.
 //  Copyright © 2017 Netrogen Creative. All rights reserved.

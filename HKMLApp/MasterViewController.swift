@@ -19,7 +19,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         var author_href: String
     }
 
-    var detailViewController: ViewController? = nil
+    var detailViewController: DetailViewController? = nil
     var objects = [Model]()
     var webView : WKWebView!
     
@@ -78,17 +78,13 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         showActivityIndicator()
         webView.load(URLRequest(url:URL(string:topTenUrl)!))
 
-        // Do any additional setup after loading the view, typically from a nib.
-        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(goSearch(_:)))
-        let addButton = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(goHome(_:)))
+        let wsButton = UIBarButtonItem(title: "到網站", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goHome(_:)))
         
-        navigationItem.leftBarButtonItem = searchButton
-
-        navigationItem.rightBarButtonItem = addButton
+        navigationItem.rightBarButtonItem = wsButton
         
         if let split = splitViewController {
             let controllers = split.viewControllers
-            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ViewController
+            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
         
     }
@@ -107,33 +103,30 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         // Dispose of any resources that can be recreated.
     }
     
-    func showDetail(urlstr: String) {
+    @objc
+    func goHome(_ sender: Any) {
+        showWebsite(urlstr: mainUrl)
+    }
+
+    func showWebsite(urlstr: String) {
         if (self.detailViewController != nil) {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            detailViewController = storyboard.instantiateViewController(withIdentifier: "webViewContainer") as? ViewController
+            let wvViewController = storyboard.instantiateViewController(withIdentifier: "webViewContainer") as? ViewController
             
             let model = Model(title: "", img: "", href: urlstr, author: "", author_href: "")
             
-            detailViewController?.detailItem = model
-            //self.present(detailViewController!, animated: true, completion: nil)
-            self.navigationController?.pushViewController(detailViewController!, animated: true)
+            wvViewController?.detailItem = model
+            self.navigationController?.pushViewController(wvViewController!, animated: true)
         }
     }
-
-    @objc
-    func goHome(_ sender: Any) {
-        performSegue(withIdentifier: "showDetail", sender: "homeButton")
-    }
-    @objc
-    func goSearch(_ sender: Any) {
-        performSegue(withIdentifier: "showDetail", sender: "searchButton")
-    }
-
+    
     // MARK: - Segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        NSLog("segue id: " + segue.identifier!)
+        
         if segue.identifier == "showDetail" {
             
-            detailViewController = (segue.destination as! UINavigationController).topViewController as? ViewController
+            detailViewController = (segue.destination as! UINavigationController).topViewController as? DetailViewController
             
             if let indexPath = tableView.indexPathForSelectedRow {
                 let object = objects[indexPath.row]
@@ -206,7 +199,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        // todo: still useful??
+        // reserve for use
         
     }
     

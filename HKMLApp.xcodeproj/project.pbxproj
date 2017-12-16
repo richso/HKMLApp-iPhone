@@ -24,6 +24,8 @@
 		0E9C3A191FCE8762007F79C0 /* UIResponder_ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C3A181FCE8762007F79C0 /* UIResponder_ext.swift */; };
 		0EA162281FCC86D4000819AC /* splash_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA162261FCC86D3000819AC /* splash_icon@3x.png */; };
 		0EA162291FCC86D4000819AC /* splash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA162271FCC86D3000819AC /* splash_icon@2x.png */; };
+		0ED94A641FE26552000BAD2E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED94A631FE26552000BAD2E /* DetailViewController.swift */; };
+		0ED94A661FE27507000BAD2E /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED94A651FE27506000BAD2E /* DetailTableViewCell.swift */; };
 		0EF7BA3B1FB2EB58008FCB04 /* forward@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF7BA351FB2EB57008FCB04 /* forward@3x.png */; };
 		0EF7BA3C1FB2EB58008FCB04 /* refresh@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF7BA361FB2EB57008FCB04 /* refresh@3x.png */; };
 		0EF7BA3D1FB2EB58008FCB04 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF7BA371FB2EB57008FCB04 /* forward@2x.png */; };
@@ -77,6 +79,8 @@
 		0E9C3A181FCE8762007F79C0 /* UIResponder_ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIResponder_ext.swift; sourceTree = "<group>"; };
 		0EA162261FCC86D3000819AC /* splash_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "splash_icon@3x.png"; path = "images/splash_icon@3x.png"; sourceTree = "<group>"; };
 		0EA162271FCC86D3000819AC /* splash_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "splash_icon@2x.png"; path = "images/splash_icon@2x.png"; sourceTree = "<group>"; };
+		0ED94A631FE26552000BAD2E /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		0ED94A651FE27506000BAD2E /* DetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		0EF7BA351FB2EB57008FCB04 /* forward@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@3x.png"; path = "images/forward@3x.png"; sourceTree = "<group>"; };
 		0EF7BA361FB2EB57008FCB04 /* refresh@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "refresh@3x.png"; path = "images/refresh@3x.png"; sourceTree = "<group>"; };
 		0EF7BA371FB2EB57008FCB04 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@2x.png"; path = "images/forward@2x.png"; sourceTree = "<group>"; };
@@ -149,9 +153,11 @@
 				0EF7BA341FB2EB41008FCB04 /* images */,
 				0E0EDC8A1FB0088000EA7CC0 /* AppDelegate.swift */,
 				0E6607231FCBB77F00B168ED /* MasterViewController.swift */,
+				0ED94A631FE26552000BAD2E /* DetailViewController.swift */,
 				0E0EDC8C1FB0088000EA7CC0 /* ViewController.swift */,
 				0E9C3A181FCE8762007F79C0 /* UIResponder_ext.swift */,
 				0E6607241FCBB77F00B168ED /* TopModelsTableViewCell.swift */,
+				0ED94A651FE27506000BAD2E /* DetailTableViewCell.swift */,
 				0E6607251FCBB77F00B168ED /* UIImageViewExtension.swift */,
 				0E0EDC8E1FB0088000EA7CC0 /* Main.storyboard */,
 				0E0EDC911FB0088000EA7CC0 /* Assets.xcassets */,
@@ -401,6 +407,7 @@
 				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookShare/FacebookShare.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -411,6 +418,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookShare.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -544,6 +552,8 @@
 				0E6607271FCBB77F00B168ED /* TopModelsTableViewCell.swift in Sources */,
 				0E0EDC8B1FB0088000EA7CC0 /* AppDelegate.swift in Sources */,
 				0E6607261FCBB77F00B168ED /* MasterViewController.swift in Sources */,
+				0ED94A661FE27507000BAD2E /* DetailTableViewCell.swift in Sources */,
+				0ED94A641FE26552000BAD2E /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

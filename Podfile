@@ -9,6 +9,8 @@ target 'HKMLApp' do
   pod 'FacebookCore'
   pod 'FacebookLogin'
   pod 'FacebookShare'
+  
+  pod 'SDWebImage', '~> 4.0'
 
   target 'HKMLAppTests' do
     inherit! :search_paths

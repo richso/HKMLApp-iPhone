@@ -53,7 +53,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        
         // store the cookie to default persistent store
         WKWebsiteDataStore.default().httpCookieStore.getAllCookies(self.saveCookies)
         
@@ -65,10 +64,14 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         var dic = Dictionary<String, Any>()
         
         for cookie in cookies {
-            dic[cookie.name] = cookie.properties
+            if cookie.name != "ppl_sid" {
+                dic[cookie.name] = cookie.properties
+            }
         }
         
         UserDefaults.standard.set(dic, forKey:"cookies")
+        
+        NSLog("@cookies stored to default store")
     }
     
     override func viewDidLoad() {
@@ -118,8 +121,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         
         NSLog("@didload: " + targetUrl)
         
-        // todo: retrieve cookies from store
-        // todo: add the cookie header to store
         let cookies_tmp = UserDefaults.standard.value(forKey: "cookies")
         
         if (cookies_tmp != nil) {
