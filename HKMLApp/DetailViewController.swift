@@ -9,6 +9,7 @@
 import UIKit
 import WebKit
 import SDWebImage
+import SKPhotoBrowser
 
 class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler, UITableViewDelegate, UITableViewDataSource {
     
@@ -60,7 +61,6 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         userContentController = WKUserContentController()
         config.userContentController = userContentController
         webView = WKWebView(frame: CGRect.zero, configuration: config)
-        
         self.view.addSubview(webView)
         
         userContentController.add(self, name: "hkmlApp")
@@ -99,12 +99,13 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
             for (key, properties) in cookies {
                 let cookie = HTTPCookie(properties: properties)
                 
-                NSLog("@key: " + key)
+                NSLog("@load key: " + key + " value: " + (properties[HTTPCookiePropertyKey.value] as? String)!)
                 
                 WKWebsiteDataStore.default().httpCookieStore.setCookie(cookie!, completionHandler: nil)
             }
         }
-
+        
+        httpCookieFromArray()
         webView.load(URLRequest(url:URL(string:targetUrl)!))
 
         //if let split = splitViewController {
@@ -170,6 +171,18 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         
         return str
     }
+    
+    func httpCookieFromArray() {
+        let cookies_tmp = UserDefaults.standard.value(forKey: "cookies")
+        
+        if (cookies_tmp != nil) {
+            let cookies = cookies_tmp as! Dictionary<String, [HTTPCookiePropertyKey : Any]>
+            
+            for (_, properties) in cookies {
+                HTTPCookieStorage.shared.setCookie(HTTPCookie.init(properties: properties)!)
+            }
+        }
+    }
 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -186,9 +199,10 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         let manager = SDWebImageManager.shared().imageDownloader
         let cookieVal = cookieValFromArray()
         
-        NSLog("@cookieval: " + cookieVal)
+        NSLog("@cookieval: " + cookieVal + ", url: " + object.img)
         
         manager?.setValue(cookieVal, forHTTPHeaderField: "Cookie")
+        httpCookieFromArray()
         
         cell.imageThumb.sd_setImage(with: URL(string: object.img)!, placeholderImage: nil, completed:{ (image, error, cacheType, url) -> Void in
             if (error != nil) {
@@ -222,6 +236,22 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return false
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as? DetailTableViewCell
+        let originImage = cell?.imageThumb.image // some image for baseImage
+        
+        httpCookieFromArray()
+        
+        var images = [SKPhoto]()
+        for idx in 0...self.objects.count-1 {
+            images.append(SKPhoto.photoWithImageURL(self.objects[idx].img))
+        }
+        
+        let browser = SKPhotoBrowser(originImage: originImage ?? UIImage(), photos: images, animatedFromView: cell!)
+        browser.initializePageIndex(indexPath.row)
+        present(browser, animated: true, completion: {})
     }
 
     // MARK: - webview
@@ -266,7 +296,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     
     func userContentController(_ userContentController: WKUserContentController, didReceive: WKScriptMessage) {
         
-        NSLog("@receive: " + didReceive.name)
+        // NSLog("@receive: " + didReceive.name)
         
         if (didReceive.name == "hkmlApp") {
             
@@ -275,11 +305,20 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
                 
                 if let models = d["photos"] as? [Any] {
                     if models.count == 0 {
-                        let alert = UIAlertController(title: "注意", message: "此項目相片必須於登入後才提供，請按入「網帖」版登入", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                        present(alert, animated: true, completion: nil)
                         self.refreshControl?.endRefreshing()
                         self.hideActivityIndicator()
+                        let alert = UIAlertController(title: "注意", message: "此項目相片必須於登入後才提供，要登入嗎？", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "要", style: .default, handler: { (action) in
+                            
+                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            let loginViewController = storyboard.instantiateViewController(withIdentifier: "loginViewContainer") as? LoginViewController
+                            
+                            self.navigationController?.pushViewController(loginViewController!, animated: true)
+                            
+                            self.tableView.reloadData()
+                        }))
+                        alert.addAction(UIAlertAction(title: "不要", style: .default, handler: nil))
+                        present(alert, animated: true, completion: nil)
                         return
                     }
                     
@@ -296,7 +335,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
                                     imgsrc = path_prefix + imgsrc!
                                 }
                                 
-                                NSLog(imgsrc!)
+                                // NSLog(imgsrc!)
                                 
                                 objects.append(ImgModel(
                                     title: "",
@@ -330,6 +369,10 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         
         present(activityViewController, animated: true, completion: nil)
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        SDImageCache.shared().clearMemory()
     }
     
     func showActivityIndicator() {

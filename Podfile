@@ -9,6 +9,7 @@ target 'HKMLApp' do
   pod 'FacebookCore'
   pod 'FacebookLogin'
   pod 'FacebookShare'
+  pod 'SKPhotoBrowser'
   
   pod 'SDWebImage', '~> 4.0'
 

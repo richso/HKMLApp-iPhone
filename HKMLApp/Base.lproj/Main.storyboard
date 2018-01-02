@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qaD-XQ-3vE">
-                                <rect key="frame" x="0.0" y="88" width="375" height="675"/>
+                                <rect key="frame" x="0.0" y="88" width="375" height="724"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration" allowsInlineMediaPlayback="YES">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -30,48 +30,14 @@
                                 <rect key="frame" x="0.0" y="86" width="375" height="2"/>
                                 <color key="progressTintColor" red="0.93333333330000001" green="0.3411764706" blue="0.1019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nKK-aY-TEi">
-                                <rect key="frame" x="0.0" y="763" width="375" height="49"/>
-                                <items>
-                                    <barButtonItem image="back.png" id="xIv-ti-qWy">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="backWithSender:" destination="BYZ-38-t0r" id="8nb-vo-NX8"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem image="forward.png" id="3tF-1a-xrx">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="forwardWithSender:" destination="BYZ-38-t0r" id="kN0-xR-1Aw"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="xKg-7Y-RPf"/>
-                                    <barButtonItem image="share.png" id="lU1-Eb-2yF">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="shareWithSender:" destination="BYZ-38-t0r" id="cpR-Tc-gce"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem image="home.png" id="9HF-Cy-wgl">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="homeWithSender:" destination="BYZ-38-t0r" id="4EW-SS-yu6"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                                <color key="barTintColor" red="0.70043140650000002" green="0.87909251450000003" blue="0.88010084629999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="qaD-XQ-3vE" secondAttribute="bottom" id="0NY-Kg-JiR"/>
                             <constraint firstItem="QSW-9u-T0h" firstAttribute="leading" secondItem="qaD-XQ-3vE" secondAttribute="leading" id="2gg-4g-rDX"/>
-                            <constraint firstItem="qaD-XQ-3vE" firstAttribute="leading" secondItem="nKK-aY-TEi" secondAttribute="leading" id="8tP-iu-6bN"/>
-                            <constraint firstItem="qaD-XQ-3vE" firstAttribute="trailing" secondItem="nKK-aY-TEi" secondAttribute="trailing" id="HFV-JZ-JHt"/>
                             <constraint firstAttribute="trailing" secondItem="QSW-9u-T0h" secondAttribute="trailing" id="IoQ-Y1-oDL"/>
-                            <constraint firstAttribute="bottom" secondItem="nKK-aY-TEi" secondAttribute="bottom" id="Uxx-4h-Lj0"/>
                             <constraint firstItem="QSW-9u-T0h" firstAttribute="leading" secondItem="AhJ-Q2-tTg" secondAttribute="leading" id="f1o-2D-T4t"/>
                             <constraint firstItem="qaD-XQ-3vE" firstAttribute="top" secondItem="QSW-9u-T0h" secondAttribute="bottom" id="hrt-RG-tWs"/>
-                            <constraint firstItem="nKK-aY-TEi" firstAttribute="top" secondItem="qaD-XQ-3vE" secondAttribute="bottom" id="j4A-pX-Mvq"/>
                             <constraint firstItem="QSW-9u-T0h" firstAttribute="trailing" secondItem="qaD-XQ-3vE" secondAttribute="trailing" id="qdQ-hZ-l9Q"/>
                             <constraint firstItem="qaD-XQ-3vE" firstAttribute="top" secondItem="WD9-Gd-q6G" secondAttribute="top" id="tJn-qS-X8T"/>
                         </constraints>
@@ -79,15 +45,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="ebG-qV-Iuy"/>
                     <connections>
-                        <outlet property="backButton" destination="xIv-ti-qWy" id="GYv-Ct-Vto"/>
-                        <outlet property="forwardButton" destination="3tF-1a-xrx" id="gfh-a6-lkR"/>
                         <outlet property="progressView" destination="QSW-9u-T0h" id="cWw-1d-f6O"/>
                         <outlet property="webView" destination="qaD-XQ-3vE" id="5NQ-T8-G4s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="15" y="1988"/>
+            <point key="canvasLocation" x="13.6" y="1987.6847290640394"/>
         </scene>
         <!--Master-->
         <scene sceneID="d1s-TP-jMh">
@@ -131,7 +95,7 @@
                             <outlet property="delegate" destination="pNn-6t-jzZ" id="Ruv-3g-lVn"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="近期熱讚作品" id="xAx-e1-7ix"/>
+                    <navigationItem key="navigationItem" title="傑作相片集" id="xAx-e1-7ix"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w0R-wd-1hM" sceneMemberID="firstResponder"/>
             </objects>
@@ -144,7 +108,6 @@
                     <toolbarItems/>
                     <connections>
                         <segue destination="Cmf-0u-oIG" kind="relationship" relationship="masterViewController" id="LIo-mV-9FV"/>
-                        <segue destination="KJU-Fq-pbr" kind="relationship" relationship="detailViewController" id="d96-n0-C79"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mfR-aY-hlw" sceneMemberID="firstResponder"/>
@@ -250,7 +213,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="xRm-Xc-eea"/>
-                                    <barButtonItem title="網帖" id="klj-Ba-Sdr">
+                                    <barButtonItem title="網上版" id="klj-Ba-Sdr">
                                         <connections>
                                             <segue destination="xAl-QD-DH4" kind="showDetail" identifier="showWebsite" id="Sh6-ct-yTf"/>
                                         </connections>
@@ -279,14 +242,67 @@
             </objects>
             <point key="canvasLocation" x="13.6" y="983.49753694581284"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Oa5-pP-E29">
+            <objects>
+                <navigationController id="iDY-0r-O8W" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="MzD-Qf-ybt">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="W1y-RF-bQT" kind="relationship" relationship="rootViewController" id="vsx-yE-Iqw"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="M7n-dY-84Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-826" y="-806"/>
+        </scene>
+        <!--登入-->
+        <scene sceneID="NGW-V9-y6x">
+            <objects>
+                <viewController storyboardIdentifier="loginViewContainer" id="W1y-RF-bQT" customClass="LoginViewController" customModule="HKMLApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eoY-Af-bjX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HtV-z4-LQe">
+                                <rect key="frame" x="0.0" y="88" width="375" height="724"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration" allowsInlineMediaPlayback="YES">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ELE-Hh-5V5">
+                                <rect key="frame" x="0.0" y="86" width="375" height="2"/>
+                                <color key="progressTintColor" red="0.93333333330000001" green="0.3411764706" blue="0.1019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </progressView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="HtV-z4-LQe" firstAttribute="top" secondItem="ELE-Hh-5V5" secondAttribute="bottom" id="4A1-ea-7HP"/>
+                            <constraint firstItem="ELE-Hh-5V5" firstAttribute="leading" secondItem="HtV-z4-LQe" secondAttribute="leading" id="Bwv-wR-fo3"/>
+                            <constraint firstItem="ELE-Hh-5V5" firstAttribute="trailing" secondItem="HtV-z4-LQe" secondAttribute="trailing" id="C9b-CK-3JU"/>
+                            <constraint firstItem="HtV-z4-LQe" firstAttribute="top" secondItem="OMp-Tx-82g" secondAttribute="top" id="UZ6-JV-qZc"/>
+                            <constraint firstAttribute="bottom" secondItem="HtV-z4-LQe" secondAttribute="bottom" id="VsC-Ue-7JN"/>
+                            <constraint firstItem="ELE-Hh-5V5" firstAttribute="leading" secondItem="eoY-Af-bjX" secondAttribute="leading" id="fMw-sw-nl6"/>
+                            <constraint firstAttribute="trailing" secondItem="ELE-Hh-5V5" secondAttribute="trailing" id="icV-4H-d2W"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="OMp-Tx-82g"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="登入" id="war-eH-k0P"/>
+                    <connections>
+                        <outlet property="progressView" destination="ELE-Hh-5V5" id="oaU-ZW-fvN"/>
+                        <outlet property="webView" destination="HtV-z4-LQe" id="cl0-iu-SoH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sZZ-ve-3Aq" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="13.6" y="-806.1576354679803"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="back.png" width="34" height="34"/>
-        <image name="forward.png" width="34" height="34"/>
-        <image name="home.png" width="34" height="34"/>
         <image name="share.png" width="24" height="34"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="WZy-X8-7xT"/>
-    </inferredMetricsTieBreakers>
 </document>

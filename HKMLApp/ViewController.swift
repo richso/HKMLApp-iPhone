@@ -17,12 +17,13 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     let html_domain = "www.hkml.net"
     let mainUrl = "http://www.hkml.net/Discuz/index.php"
     let touchSwipe = "https://raw.githubusercontent.com/mattbryson/TouchSwipe-Jquery-Plugin/master/jquery.touchSwipe.min.js"
+    // use hkmlApp_ios.js for approval
     let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp.js"
     let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
     var targetUrl = ""
     
-    @IBOutlet weak var backButton: UIBarButtonItem!
-    @IBOutlet weak var forwardButton: UIBarButtonItem!
+    //@IBOutlet weak var backButton: UIBarButtonItem!
+    //@IBOutlet weak var forwardButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
     
     //var userContentController : WKUserContentController!
@@ -52,38 +53,14 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        // store the cookie to default persistent store
-        WKWebsiteDataStore.default().httpCookieStore.getAllCookies(self.saveCookies)
-        
-        super.viewWillDisappear(animated)
-    }
-    
-    func saveCookies(cookies: [HTTPCookie]) -> Void {
-        
-        var dic = Dictionary<String, Any>()
-        
-        for cookie in cookies {
-            if cookie.name != "ppl_sid" {
-                dic[cookie.name] = cookie.properties
-            }
-        }
-        
-        UserDefaults.standard.set(dic, forKey:"cookies")
-        
-        NSLog("@cookies stored to default store")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         NSLog("@viewDidLoad")
         
         let config = webView.configuration
-        //userContentController = WKUserContentController()
-        //config.userContentController = userContentController
         
-        //config.userContentController.add(self, name: "hkmlAppInput")
+        config.userContentController.add(self, name: "hkmlAppCookie")
 
         var jquery = try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
         jquery = (jquery!) + " $j=jQuery.noConflict();";
@@ -139,8 +116,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         
         webView.load(urlRequest)
         
-        backButton.isEnabled = false
-        forwardButton.isEnabled = false
+        //backButton.isEnabled = false
+        //forwardButton.isEnabled = false
 
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(self.refreshWebView), for: UIControlEvents.valueChanged)
@@ -182,8 +159,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if (keyPath == "loading") {
-            backButton.isEnabled = webView.canGoBack
-            forwardButton.isEnabled = webView.canGoForward
+            //backButton.isEnabled = webView.canGoBack
+            //forwardButton.isEnabled = webView.canGoForward
         }
         if (keyPath == "estimatedProgress") {
             progressView.isHidden = webView.estimatedProgress == 1
@@ -304,8 +281,29 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     
     func userContentController(_ userContentController: WKUserContentController, didReceive: WKScriptMessage) {
         
-        if (didReceive.name == "hkmlAppInput") {
+        if (didReceive.name == "hkmlAppCookie") {
             // reserve for future use
+            if let d = didReceive.body as? [[String: String]] {
+                var dic = Dictionary<String, [HTTPCookiePropertyKey: Any]>()
+                
+                NSLog("@cookies before stored to default store")
+                
+                var dateComponent = DateComponents()
+                dateComponent.day = 365
+                
+                for cookie in d {
+                    if (cookie["name"]!.hasPrefix("ppl_")) {
+                        dic[cookie["name"]!] = [HTTPCookiePropertyKey: Any]()
+                        dic[cookie["name"]!]![HTTPCookiePropertyKey.name] = cookie["name"]
+                        dic[cookie["name"]!]![HTTPCookiePropertyKey.value] = cookie["value"]
+                        dic[cookie["name"]!]![HTTPCookiePropertyKey.path] = "/Discuz/"
+                        dic[cookie["name"]!]![HTTPCookiePropertyKey.domain] = "hkml.net"
+                        dic[cookie["name"]!]![HTTPCookiePropertyKey.expires] = Calendar.current.date(byAdding: dateComponent, to: Date())
+                    }
+                }
+                UserDefaults.standard.set(dic, forKey:"cookies")
+                NSLog("@cookies stored to default store")
+            }
         }
     }
     

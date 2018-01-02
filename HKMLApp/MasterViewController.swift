@@ -26,7 +26,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
     let path_prefix = "http://www.hkml.net/Discuz/"
     let mainUrl = "http://www.hkml.net/Discuz/index.php"
     let searchUrl = "http://www.hkml.net/Discuz/search.php"
-    let topTenUrl = "http://www.hkml.net/Discuz/toptendetails.php"
+    let topTenUrl = "http://www.hkml.net/Discuz/toptendetails.php?colNum=10"
     let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/getTopModels.js"
     let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
     
@@ -78,7 +78,11 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         showActivityIndicator()
         webView.load(URLRequest(url:URL(string:topTenUrl)!))
 
-        let wsButton = UIBarButtonItem(title: "到網站", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goHome(_:)))
+        let loginButton = UIBarButtonItem(title: "登入", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goLogin(_:)))
+        
+        navigationItem.leftBarButtonItem = loginButton
+        
+        let wsButton = UIBarButtonItem(title: " ", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goHome(_:)))
         
         navigationItem.rightBarButtonItem = wsButton
         
@@ -103,6 +107,15 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         // Dispose of any resources that can be recreated.
     }
     
+    @objc
+    func goLogin(_ sender: Any) {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let loginViewController = storyboard.instantiateViewController(withIdentifier: "loginViewContainer") as? LoginViewController
+        
+        self.navigationController?.pushViewController(loginViewController!, animated: true)
+        
+    }
     @objc
     func goHome(_ sender: Any) {
         showWebsite(urlstr: mainUrl)
@@ -158,6 +171,9 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "TopModelsTableViewCell"
+        
+        // NSLog("@cell")
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? TopModelsTableViewCell else {
             fatalError("The dequeued cell is not an instance of TopModelsTableViewCell.")
         }
@@ -172,7 +188,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
-        return true
+        return false
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -226,7 +242,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
     
     func userContentController(_ userContentController: WKUserContentController, didReceive: WKScriptMessage) {
         
-        NSLog("@receive: " + didReceive.name)
+        // NSLog("@receive: " + didReceive.name)
         
         if (didReceive.name == "hkmlApp") {
             
@@ -235,10 +251,10 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
                 if let models = d["billboard"] as? [Any] {
                     objects = [Model]()
                     
-                    for i in 0...19 {
+                    for i in 0...39 {
                         let model = models[i]
                         if let modelSpec = model as? [String:Any] {
-                            NSLog(path_prefix + (modelSpec["img"] as? String)!)
+                            // NSLog(path_prefix + (modelSpec["img"] as? String)!)
                             
                             objects.append(Model(
                                 title: (modelSpec["title"] as? String)!,
