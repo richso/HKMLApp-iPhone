@@ -302,6 +302,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
                     }
                 }
                 UserDefaults.standard.set(dic, forKey:"cookies")
+                UserDefaults.standard.synchronize()
                 NSLog("@cookies stored to default store")
             }
         }

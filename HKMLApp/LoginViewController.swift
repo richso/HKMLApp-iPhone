@@ -184,6 +184,7 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
                     }
                 }
                 UserDefaults.standard.set(dic, forKey:"cookies")
+                UserDefaults.standard.synchronize()
                 NSLog("@cookies stored to default store")
                 
                 // go back to masterview
