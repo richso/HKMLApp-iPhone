@@ -19,7 +19,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         var author_href: String
     }
 
-    var detailViewController: DetailViewController? = nil
+    var detailViewController: MultipageViewController? = nil
     var objects = [Model]()
     var webView : WKWebView!
     
@@ -32,12 +32,13 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
     
     var userContentController : WKUserContentController!
     
-    var spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-    var loadingView: UIView = UIView()
+    var sak: SwissArmyKnife?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        sak = SwissArmyKnife(loaderParentView: self.view)
+        
         refreshControl = UIRefreshControl()
         tableView.addSubview(refreshControl!)
         refreshControl?.addTarget(self, action: #selector(refreshTableData(_:)), for: .valueChanged)
@@ -75,7 +76,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         
         webView.addObserver(self, forKeyPath: "title", options: .new, context: nil)
         
-        showActivityIndicator()
+        sak?.showActivityIndicator()
         webView.load(URLRequest(url:URL(string:topTenUrl)!))
 
         let loginButton = UIBarButtonItem(title: "登入", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goLogin(_:)))
@@ -88,7 +89,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         
         if let split = splitViewController {
             let controllers = split.viewControllers
-            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? MultipageViewController
         }
         
     }
@@ -124,7 +125,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
     func showWebsite(urlstr: String) {
         if (self.detailViewController != nil) {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let wvViewController = storyboard.instantiateViewController(withIdentifier: "webViewContainer") as? ViewController
+            let wvViewController = storyboard.instantiateViewController(withIdentifier: "webViewContainer") as? WebviewController
             
             let model = Model(title: "", img: "", href: urlstr, author: "", author_href: "")
             
@@ -139,21 +140,13 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         
         if segue.identifier == "showDetail" {
             
-            detailViewController = (segue.destination as! UINavigationController).topViewController as? DetailViewController
+            detailViewController = segue.destination as? MultipageViewController //(segue.destination as! UINavigationController).topViewController as? DetailViewController
             
             if let indexPath = tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row]
-                
-                detailViewController?.detailItem = object
-            } else {
-                var urlstr = mainUrl
-                if sender as! String == "searchButton" {
-                    urlstr = searchUrl
-                }
-                let model = Model(title: "", img: "", href: urlstr, author: "", author_href: "")
-                
-                detailViewController?.detailItem = model
+                detailViewController?.objects = objects
+                detailViewController?.startIndex = indexPath.row
             }
+            
             detailViewController?.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
             detailViewController?.navigationItem.leftItemsSupplementBackButton = true
         }
@@ -269,7 +262,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                         self.refreshControl?.endRefreshing()
-                        self.hideActivityIndicator()
+                        self.sak?.hideActivityIndicator()
                         return
                     }
                 }
@@ -278,31 +271,5 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         }
     }
     
-    func showActivityIndicator() {
-        DispatchQueue.main.async {
-            self.loadingView = UIView()
-            self.loadingView.frame = CGRect(x: 0.0, y: 0.0, width: 100.0, height: 100.0)
-            self.loadingView.center = self.view.center
-            self.loadingView.backgroundColor = UIColor(red: 0.26, green: 0.26, blue: 0.26, alpha: 0.7)
-            //self.loadingView.alpha = 0.7
-            self.loadingView.clipsToBounds = true
-            self.loadingView.layer.cornerRadius = 10
-            
-            self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-            self.spinner.frame = CGRect(x: 0.0, y: 0.0, width: 80.0, height: 80.0)
-            self.spinner.center = CGPoint(x:self.loadingView.bounds.size.width / 2, y:self.loadingView.bounds.size.height / 2)
-            
-            self.loadingView.addSubview(self.spinner)
-            self.view.addSubview(self.loadingView)
-            self.spinner.startAnimating()
-        }
-    }
-    
-    func hideActivityIndicator() {
-        DispatchQueue.main.async {
-            self.spinner.stopAnimating()
-            self.loadingView.removeFromSuperview()
-        }
-    }
 }
 

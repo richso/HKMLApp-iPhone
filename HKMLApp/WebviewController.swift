@@ -9,18 +9,21 @@
 import UIKit
 import WebKit
 import FacebookShare
+import SKPhotoBrowser
 
-class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
+class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 {
-
     @IBOutlet weak var webView: WKWebView!
     let html_domain = "www.hkml.net"
+    let path_prefix = "http://www.hkml.net/Discuz/"
     let mainUrl = "http://www.hkml.net/Discuz/index.php"
     let touchSwipe = "https://raw.githubusercontent.com/mattbryson/TouchSwipe-Jquery-Plugin/master/jquery.touchSwipe.min.js"
     // use hkmlApp_ios.js for approval
-    let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp.js"
+    let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp_ios.js"
     let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
     var targetUrl = ""
+    
+    var parentController: DetailViewController!
     
     //@IBOutlet weak var backButton: UIBarButtonItem!
     //@IBOutlet weak var forwardButton: UIBarButtonItem!
@@ -61,6 +64,7 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         let config = webView.configuration
         
         config.userContentController.add(self, name: "hkmlAppCookie")
+        config.userContentController.add(self, name: "hkmlAppThumbnail")
 
         var jquery = try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
         jquery = (jquery!) + " $j=jQuery.noConflict();";
@@ -123,13 +127,24 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         refreshControl.addTarget(self, action: #selector(self.refreshWebView), for: UIControlEvents.valueChanged)
         webView.scrollView.addSubview(refreshControl)
         
+        let leftButton = UIBarButtonItem(title: "返回相集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goPhotoCollection(_:)))
+        
+        navigationItem.leftBarButtonItem = leftButton
     }
     
-    @objc func refreshWebView(sender: UIRefreshControl) {
+    @objc
+    func goPhotoCollection(_ sender: Any) {
+        
+        self.performSegue(withIdentifier: "websiteUnwind", sender: sender)
+    }
+    
+    @objc
+    func refreshWebView(sender: UIRefreshControl) {
         webView.reload()
         sender.endRefreshing()
     }
 
+    /*
     @IBAction func back(sender: UIBarButtonItem) {
         webView.goBack()
     }
@@ -137,6 +152,12 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     @IBAction func forward(sender: UIBarButtonItem) {
         webView.goForward()
     }
+     
+     @IBAction func home(sender: UIBarButtonItem) {
+         let request = URLRequest(url: URL(string:mainUrl)!)
+         webView.load(request)
+     }
+    */
     
     @IBAction func share(sender: UIBarButtonItem) {
         let activityViewController = UIActivityViewController(
@@ -145,11 +166,6 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         
         present(activityViewController, animated: true, completion: nil)
         
-    }
-    
-    @IBAction func home(sender: UIBarButtonItem) {
-        let request = URLRequest(url: URL(string:mainUrl)!)
-        webView.load(request)
     }
     
     override func didReceiveMemoryWarning() {
@@ -306,7 +322,45 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
                 NSLog("@cookies stored to default store")
             }
         }
+        
+        if (didReceive.name == "hkmlAppThumbnail") {
+            NSLog("@Photo Slide")
+            
+            httpCookieFromArray()
+            
+            if let d = didReceive.body as? [String: Any] {
+                let curIdx = d["idx"] as? NSInteger
+                let imgurls = d["images"] as? [String]
+                
+                var images = [SKPhoto]()
+                for idx in 0...(imgurls?.count)!-1 {
+                    NSLog("@idx: %d, " + imgurls![idx], idx)
+                    var imgsrc = imgurls![idx]
+                    if (!(imgsrc.hasPrefix("http:") || imgsrc.hasPrefix("https:"))) {
+                        imgsrc = path_prefix + imgsrc
+                    }
+                    let photo = SKPhoto.photoWithImageURL(imgsrc)
+                    images.append(photo)
+                    photo.shouldCachePhotoURLImage = true
+                }
+                
+                let browser = SKPhotoBrowser(photos: images)
+                browser.initializePageIndex(curIdx!)
+                present(browser, animated: true, completion: {})
+            }
+        }
     }
     
+    func httpCookieFromArray() {
+        let cookies_tmp = UserDefaults.standard.value(forKey: "cookies")
+        
+        if (cookies_tmp != nil) {
+            let cookies = cookies_tmp as! Dictionary<String, [HTTPCookiePropertyKey : Any]>
+            
+            for (_, properties) in cookies {
+                HTTPCookieStorage.shared.setCookie(HTTPCookie.init(properties: properties)!)
+            }
+        }
+    }
 }
 

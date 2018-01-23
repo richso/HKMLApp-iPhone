@@ -13,6 +13,7 @@ import SKPhotoBrowser
 
 class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler, UITableViewDelegate, UITableViewDataSource {
     
+    
     struct ImgModel {
         var title: String
         var img: String
@@ -21,11 +22,13 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         var author_href: String
         var img_height: CGFloat = 0
     }
-
+    
     @IBOutlet weak var tableView: UITableView!
     var refreshControl: UIRefreshControl?
-    var detailViewController: ViewController? = nil
+    var detailViewController: WebviewController? = nil
     var objects = [ImgModel]()
+    var pageIndex: NSInteger!
+    var multiController: MultipageViewController!
     var webView : WKWebView!
     
     let path_prefix = "http://www.hkml.net/Discuz/"
@@ -38,8 +41,8 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     
     var userContentController : WKUserContentController!
     
-    var spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-    var loadingView: UIView = UIView()
+    var sak: SwissArmyKnife?
+    
     var detailItem: MasterViewController.Model? {
         didSet {
             // Update the view.
@@ -50,6 +53,9 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        sak = SwissArmyKnife(loaderParentView: self.view)
+        SKCache.sharedCache.imageCache = SDToSKCache()
+
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
         
@@ -89,7 +95,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         
         webView.addObserver(self, forKeyPath: "title", options: .new, context: nil)
         
-        showActivityIndicator()
+        sak?.showActivityIndicator()
         
         let cookies_tmp = UserDefaults.standard.value(forKey: "cookies")
         
@@ -133,7 +139,9 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showWebsite" {
             
-            detailViewController = (segue.destination as! UINavigationController).topViewController as? ViewController
+            detailViewController = (segue.destination as!  UINavigationController).topViewController as? WebviewController
+            
+            detailViewController?.parentController = self
             
             if sender as? String == "login" {
                 detailViewController?.detailItem = MasterViewController.Model(title: "", img: "", href: loginUrl, author: "", author_href: "")
@@ -144,6 +152,10 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
             detailViewController?.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
             detailViewController?.navigationItem.leftItemsSupplementBackButton = true
         }
+    }
+    
+    @IBAction func unwindActionFromWebview(unwindSegue: UIStoryboardSegue) {
+        // don't remove, place holder for unwin segue
     }
 
     // MARK: - Table View
@@ -246,7 +258,9 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         
         var images = [SKPhoto]()
         for idx in 0...self.objects.count-1 {
-            images.append(SKPhoto.photoWithImageURL(self.objects[idx].img))
+            let photo = SKPhoto.photoWithImageURL(self.objects[idx].img)
+            images.append(photo)
+            photo.shouldCachePhotoURLImage = true
         }
         
         let browser = SKPhotoBrowser(originImage: originImage ?? UIImage(), photos: images, animatedFromView: cell!)
@@ -306,7 +320,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
                 if let models = d["photos"] as? [Any] {
                     if models.count == 0 {
                         self.refreshControl?.endRefreshing()
-                        self.hideActivityIndicator()
+                        self.sak?.hideActivityIndicator()
                         let alert = UIAlertController(title: "注意", message: "此項目相片必須於登入後才提供，要登入嗎？", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "要", style: .default, handler: { (action) in
                             
@@ -352,7 +366,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
                         DispatchQueue.main.async {
                             self.tableView.reloadData()
                             self.refreshControl?.endRefreshing()
-                            self.hideActivityIndicator()
+                            self.sak?.hideActivityIndicator()
                             return
                         }
                     }
@@ -373,33 +387,6 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     
     override func viewWillDisappear(_ animated: Bool) {
         SDImageCache.shared().clearMemory()
-    }
-    
-    func showActivityIndicator() {
-        DispatchQueue.main.async {
-            self.loadingView = UIView()
-            self.loadingView.frame = CGRect(x: 0.0, y: 0.0, width: 100.0, height: 100.0)
-            self.loadingView.center = self.view.center
-            self.loadingView.backgroundColor = UIColor(red: 0.26, green: 0.26, blue: 0.26, alpha: 0.7)
-            //self.loadingView.alpha = 0.7
-            self.loadingView.clipsToBounds = true
-            self.loadingView.layer.cornerRadius = 10
-            
-            self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-            self.spinner.frame = CGRect(x: 0.0, y: 0.0, width: 80.0, height: 80.0)
-            self.spinner.center = CGPoint(x:self.loadingView.bounds.size.width / 2, y:self.loadingView.bounds.size.height / 2)
-            
-            self.loadingView.addSubview(self.spinner)
-            self.view.addSubview(self.loadingView)
-            self.spinner.startAnimating()
-        }
-    }
-    
-    func hideActivityIndicator() {
-        DispatchQueue.main.async {
-            self.spinner.stopAnimating()
-            self.loadingView.removeFromSuperview()
-        }
     }
 }
 

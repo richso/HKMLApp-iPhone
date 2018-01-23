@@ -21,6 +21,8 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
     let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
     var loginUrl = "http://www.hkml.net/Discuz/logging.php?action=login"
     
+    var sak: SwissArmyKnife?
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
@@ -29,6 +31,8 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
         super.viewDidLoad()
         
         NSLog("@viewDidLoad")
+        
+        sak = SwissArmyKnife(loaderParentView: self.view)
         
         let config = webView.configuration
         
@@ -162,6 +166,8 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
     func userContentController(_ userContentController: WKUserContentController, didReceive: WKScriptMessage) {
         
         if (didReceive.name == "hkmlAppCookie") {
+            sak?.showActivityIndicator()
+            
             // reserve for future use
             if let d = didReceive.body as? [[String: String]] {
                 var dic = Dictionary<String, [HTTPCookiePropertyKey: Any]>()
@@ -187,9 +193,15 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
                 UserDefaults.standard.synchronize()
                 NSLog("@cookies stored to default store")
                 
+            }
+            
+            // let some 4 second for cookie sync
+            sak?.setTimeout(4, block: {
+                self.sak?.hideActivityIndicator()
+                
                 // go back to masterview
                 self.navigationController?.popViewController(animated: true)
-            }
+            })
         }
     }
     
