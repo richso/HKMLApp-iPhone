@@ -23,10 +23,15 @@
 		0E6235DD2016460800C67A70 /* SDToSKCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6235DC2016460800C67A70 /* SDToSKCache.swift */; };
 		0E6607261FCBB77F00B168ED /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6607231FCBB77F00B168ED /* MasterViewController.swift */; };
 		0E6607271FCBB77F00B168ED /* TopModelsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6607241FCBB77F00B168ED /* TopModelsTableViewCell.swift */; };
-		0E6607281FCBB77F00B168ED /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6607251FCBB77F00B168ED /* UIImageViewExtension.swift */; };
 		0E8E224E20163C490072CC47 /* SwissArmyKnife.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8E224D20163C490072CC47 /* SwissArmyKnife.swift */; };
 		0EA162281FCC86D4000819AC /* splash_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA162261FCC86D3000819AC /* splash_icon@3x.png */; };
 		0EA162291FCC86D4000819AC /* splash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA162271FCC86D3000819AC /* splash_icon@2x.png */; };
+		0ED69044201B2FBC002DB5B2 /* jquery-1.12.4.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 0ED69043201B2FBC002DB5B2 /* jquery-1.12.4.min.js */; };
+		0ED69046201B3024002DB5B2 /* getLoginStatus.js in Resources */ = {isa = PBXBuildFile; fileRef = 0ED69045201B3024002DB5B2 /* getLoginStatus.js */; };
+		0ED69048201B31F3002DB5B2 /* getTopModels.js in Resources */ = {isa = PBXBuildFile; fileRef = 0ED69047201B31F3002DB5B2 /* getTopModels.js */; };
+		0ED6904A201B32BD002DB5B2 /* getModelPhotos.js in Resources */ = {isa = PBXBuildFile; fileRef = 0ED69049201B32BD002DB5B2 /* getModelPhotos.js */; };
+		0ED6904D201B349C002DB5B2 /* hkmlApp.js in Resources */ = {isa = PBXBuildFile; fileRef = 0ED6904B201B349C002DB5B2 /* hkmlApp.js */; };
+		0ED6904E201B349C002DB5B2 /* jquery.touchSwipe.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 0ED6904C201B349C002DB5B2 /* jquery.touchSwipe.min.js */; };
 		0ED94A641FE26552000BAD2E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED94A631FE26552000BAD2E /* DetailViewController.swift */; };
 		0ED94A661FE27507000BAD2E /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED94A651FE27506000BAD2E /* DetailTableViewCell.swift */; };
 		0EF7BA3B1FB2EB58008FCB04 /* forward@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EF7BA351FB2EB57008FCB04 /* forward@3x.png */; };
@@ -81,10 +86,15 @@
 		0E6235DC2016460800C67A70 /* SDToSKCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDToSKCache.swift; sourceTree = "<group>"; };
 		0E6607231FCBB77F00B168ED /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		0E6607241FCBB77F00B168ED /* TopModelsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopModelsTableViewCell.swift; sourceTree = "<group>"; };
-		0E6607251FCBB77F00B168ED /* UIImageViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
 		0E8E224D20163C490072CC47 /* SwissArmyKnife.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwissArmyKnife.swift; sourceTree = "<group>"; };
 		0EA162261FCC86D3000819AC /* splash_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "splash_icon@3x.png"; path = "images/splash_icon@3x.png"; sourceTree = "<group>"; };
 		0EA162271FCC86D3000819AC /* splash_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "splash_icon@2x.png"; path = "images/splash_icon@2x.png"; sourceTree = "<group>"; };
+		0ED69043201B2FBC002DB5B2 /* jquery-1.12.4.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "jquery-1.12.4.min.js"; path = "Resources/jquery-1.12.4.min.js"; sourceTree = "<group>"; };
+		0ED69045201B3024002DB5B2 /* getLoginStatus.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = getLoginStatus.js; path = Resources/getLoginStatus.js; sourceTree = "<group>"; };
+		0ED69047201B31F3002DB5B2 /* getTopModels.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = getTopModels.js; path = Resources/getTopModels.js; sourceTree = "<group>"; };
+		0ED69049201B32BD002DB5B2 /* getModelPhotos.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = getModelPhotos.js; path = Resources/getModelPhotos.js; sourceTree = "<group>"; };
+		0ED6904B201B349C002DB5B2 /* hkmlApp.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = hkmlApp.js; path = Resources/hkmlApp.js; sourceTree = "<group>"; };
+		0ED6904C201B349C002DB5B2 /* jquery.touchSwipe.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = jquery.touchSwipe.min.js; path = Resources/jquery.touchSwipe.min.js; sourceTree = "<group>"; };
 		0ED94A631FE26552000BAD2E /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		0ED94A651FE27506000BAD2E /* DetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		0EF7BA351FB2EB57008FCB04 /* forward@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@3x.png"; path = "images/forward@3x.png"; sourceTree = "<group>"; };
@@ -156,17 +166,22 @@
 		0E0EDC891FB0088000EA7CC0 /* HKMLApp */ = {
 			isa = PBXGroup;
 			children = (
+				0ED69045201B3024002DB5B2 /* getLoginStatus.js */,
+				0ED69047201B31F3002DB5B2 /* getTopModels.js */,
+				0ED69049201B32BD002DB5B2 /* getModelPhotos.js */,
+				0ED69043201B2FBC002DB5B2 /* jquery-1.12.4.min.js */,
+				0ED6904B201B349C002DB5B2 /* hkmlApp.js */,
+				0ED6904C201B349C002DB5B2 /* jquery.touchSwipe.min.js */,
 				0EF7BA341FB2EB41008FCB04 /* images */,
 				0E0EDC8A1FB0088000EA7CC0 /* AppDelegate.swift */,
 				0E3A01C11FFA2DB200192CAC /* LoginViewController.swift */,
 				0E6607231FCBB77F00B168ED /* MasterViewController.swift */,
+				0E6607241FCBB77F00B168ED /* TopModelsTableViewCell.swift */,
 				0E3A023D1FFC9DA900192CAC /* MultipageViewController.swift */,
 				0ED94A631FE26552000BAD2E /* DetailViewController.swift */,
 				0ED94A651FE27506000BAD2E /* DetailTableViewCell.swift */,
 				0E0EDC8C1FB0088000EA7CC0 /* WebviewController.swift */,
 				0E6235DC2016460800C67A70 /* SDToSKCache.swift */,
-				0E6607241FCBB77F00B168ED /* TopModelsTableViewCell.swift */,
-				0E6607251FCBB77F00B168ED /* UIImageViewExtension.swift */,
 				0E8E224D20163C490072CC47 /* SwissArmyKnife.swift */,
 				0E0EDC8E1FB0088000EA7CC0 /* Main.storyboard */,
 				0E0EDC911FB0088000EA7CC0 /* Assets.xcassets */,
@@ -354,14 +369,20 @@
 			files = (
 				0E0EDC951FB0088000EA7CC0 /* LaunchScreen.storyboard in Resources */,
 				0EA162281FCC86D4000819AC /* splash_icon@3x.png in Resources */,
+				0ED69044201B2FBC002DB5B2 /* jquery-1.12.4.min.js in Resources */,
+				0ED6904E201B349C002DB5B2 /* jquery.touchSwipe.min.js in Resources */,
 				0EF7BA3E1FB2EB58008FCB04 /* refresh@2x.png in Resources */,
 				0E379ECC1FB969290027B19C /* home@3x.png in Resources */,
 				0EF7BA3F1FB2EB58008FCB04 /* back@3x.png in Resources */,
 				0EF7BA3B1FB2EB58008FCB04 /* forward@3x.png in Resources */,
+				0ED69046201B3024002DB5B2 /* getLoginStatus.js in Resources */,
 				0EF7BA3D1FB2EB58008FCB04 /* forward@2x.png in Resources */,
 				0EA162291FCC86D4000819AC /* splash_icon@2x.png in Resources */,
 				0E379ECB1FB969290027B19C /* home@2x.png in Resources */,
+				0ED69048201B31F3002DB5B2 /* getTopModels.js in Resources */,
 				0E379ED01FB9746A0027B19C /* share@3x.png in Resources */,
+				0ED6904A201B32BD002DB5B2 /* getModelPhotos.js in Resources */,
+				0ED6904D201B349C002DB5B2 /* hkmlApp.js in Resources */,
 				0EF7BA401FB2EB58008FCB04 /* back@2x.png in Resources */,
 				0E379ECF1FB9746A0027B19C /* share@2x.png in Resources */,
 				0E0EDC921FB0088000EA7CC0 /* Assets.xcassets in Resources */,
@@ -558,7 +579,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E3A01C21FFA2DB200192CAC /* LoginViewController.swift in Sources */,
-				0E6607281FCBB77F00B168ED /* UIImageViewExtension.swift in Sources */,
 				0E8E224E20163C490072CC47 /* SwissArmyKnife.swift in Sources */,
 				0E0EDC8D1FB0088000EA7CC0 /* WebviewController.swift in Sources */,
 				0E6607271FCBB77F00B168ED /* TopModelsTableViewCell.swift in Sources */,

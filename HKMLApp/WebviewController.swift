@@ -18,8 +18,7 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
     let path_prefix = "http://www.hkml.net/Discuz/"
     let mainUrl = "http://www.hkml.net/Discuz/index.php"
     let touchSwipe = "https://raw.githubusercontent.com/mattbryson/TouchSwipe-Jquery-Plugin/master/jquery.touchSwipe.min.js"
-    // use hkmlApp_ios.js for approval
-    let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp_ios.js"
+    let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp.js"
     let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
     var targetUrl = ""
     
@@ -66,13 +65,16 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
         config.userContentController.add(self, name: "hkmlAppCookie")
         config.userContentController.add(self, name: "hkmlAppThumbnail")
 
-        var jquery = try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
+        let filePath = Bundle.main.path(forResource: "jquery-1.12.4.min", ofType: "js")
+        var jquery = try? String(contentsOfFile: filePath!, encoding:String.Encoding.utf8) //try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
+        
         jquery = (jquery!) + " $j=jQuery.noConflict();";
         let jqScript = WKUserScript(source: jquery!, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         
         config.userContentController.addUserScript(jqScript)
         
-        let jsTouchSwipe = try? String(contentsOf: URL(string: touchSwipe + "?" + String(arc4random()))!, encoding: String.Encoding.utf8)
+        let swipefilePath = Bundle.main.path(forResource: "jquery.touchSwipe.min", ofType: "js")
+        let jsTouchSwipe = try? String(contentsOfFile: swipefilePath!, encoding:String.Encoding.utf8)
         let sTouchSwipe = WKUserScript(source: jsTouchSwipe!, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         
         config.userContentController.addUserScript(sTouchSwipe)
@@ -82,8 +84,12 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
         let big5encoding = String.Encoding(rawValue: nsEnc) // String.Encoding
         
         let scriptURL = hkmlAppJs + "?" + String(arc4random())
-        let scriptContent = try? String(contentsOf: URL(string: scriptURL)!, encoding: big5encoding)
-        
+        var scriptContent = try? String(contentsOf: URL(string: scriptURL)!, encoding: big5encoding)
+        if (scriptContent == nil) {
+            let scriptPath = Bundle.main.path(forResource: "hkmlApp", ofType: "js")
+            scriptContent = try? String(contentsOfFile: scriptPath!, encoding:big5encoding)
+        }
+
         let script = WKUserScript(source: scriptContent!, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         
         config.userContentController.addUserScript(script)

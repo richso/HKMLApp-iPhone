@@ -38,7 +38,8 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
         
         config.userContentController.add(self, name: "hkmlAppCookie")
 
-        var jquery = try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
+        let filePath = Bundle.main.path(forResource: "jquery-1.12.4.min", ofType: "js")
+        var jquery = try? String(contentsOfFile: filePath!, encoding:String.Encoding.utf8) //try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
         jquery = (jquery!) + " $j=jQuery.noConflict();";
         let jqScript = WKUserScript(source: jquery!, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         
@@ -49,7 +50,11 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
         let big5encoding = String.Encoding(rawValue: nsEnc) // String.Encoding
         
         let scriptURL = hkmlAppJs + "?" + String(arc4random())
-        let scriptContent = try? String(contentsOf: URL(string: scriptURL)!, encoding: big5encoding)
+        var scriptContent = try? String(contentsOf: URL(string: scriptURL)!, encoding: big5encoding)
+        if (scriptContent == nil) {
+            let scriptPath = Bundle.main.path(forResource: "getLoginStatus", ofType: "js")
+            scriptContent = try? String(contentsOfFile: scriptPath!, encoding:big5encoding)
+        }
         
         let script = WKUserScript(source: scriptContent!, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         
@@ -195,8 +200,8 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
                 
             }
             
-            // let some 4 second for cookie sync
-            sak?.setTimeout(4, block: {
+            // let some seconds for cookie sync
+            sak?.setTimeout(6, block: {
                 self.sak?.hideActivityIndicator()
                 
                 // go back to masterview

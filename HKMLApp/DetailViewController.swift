@@ -71,7 +71,8 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         
         userContentController.add(self, name: "hkmlApp")
         
-        var jquery = try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
+        let filePath = Bundle.main.path(forResource: "jquery-1.12.4.min", ofType: "js")
+        var jquery = try? String(contentsOfFile: filePath!, encoding:String.Encoding.utf8) //try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
         jquery = (jquery!) + " $j=jQuery.noConflict();";
         let jqScript = WKUserScript(source: jquery!, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         config.userContentController.addUserScript(jqScript)
@@ -81,7 +82,12 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         let big5encoding = String.Encoding(rawValue: nsEnc) // String.Encoding
         
         let scriptURL = hkmlAppJs + "?" + String(arc4random())
-        let scriptContent = try? String(contentsOf: URL(string: scriptURL)!, encoding: big5encoding)
+        var scriptContent = try? String(contentsOf: URL(string: scriptURL)!, encoding: big5encoding)
+        
+        if (scriptContent == nil) {
+            let scriptPath = Bundle.main.path(forResource: "getModelPhotos.js", ofType: "js")
+            scriptContent = try? String(contentsOfFile: scriptPath!, encoding:big5encoding)
+        }
         
         let script = WKUserScript(source: scriptContent!, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         
