@@ -83,7 +83,7 @@
         <!--Master-->
         <scene sceneID="d1s-TP-jMh">
             <objects>
-                <tableViewController title="Master" clearsSelectionOnViewWillAppear="NO" id="pNn-6t-jzZ" customClass="MasterViewController" customModule="HKMLApp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="masterView" title="Master" clearsSelectionOnViewWillAppear="NO" id="pNn-6t-jzZ" customClass="MasterViewController" customModule="HKMLApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="jlN-7X-d2M">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -250,7 +250,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="xRm-Xc-eea"/>
                                     <barButtonItem title="網上版" id="klj-Ba-Sdr">
                                         <connections>
-                                            <segue destination="xAl-QD-DH4" kind="showDetail" identifier="showWebsite" id="hZs-0t-xrG"/>
+                                            <action selector="onClickWebsite:" destination="Ufx-gE-KyT" id="XV2-0G-mMf"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>

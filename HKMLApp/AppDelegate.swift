@@ -56,5 +56,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         }
         return false
     }
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        if (userActivity.activityType == NSUserActivityTypeBrowsingWeb) {
+            let url = userActivity.webpageURL
+            let urlstr = url?.absoluteString
+            
+            let board = UIStoryboard(name: "Main", bundle: nil)
+            let wvViewController : WebviewController = board.instantiateViewController(withIdentifier: "webViewContainer") as! WebviewController
+            let splitViewController = window!.rootViewController as! UISplitViewController
+            
+            let model = MasterViewController.Model(title: "", img: "", href: urlstr!, author: "", author_href: "")
+            
+            wvViewController.detailItem = model
+            
+            splitViewController.navigationController?.pushViewController(wvViewController, animated: true)
+            
+            return true
+        }
+        
+        return false
+    }
 }
 

@@ -90,7 +90,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         
         navigationItem.leftBarButtonItem = loginButton
         
-        let wsButton = UIBarButtonItem(title: " ", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goHome(_:)))
+        let wsButton = UIBarButtonItem(title: "    ", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goHome(_:)))
         
         navigationItem.rightBarButtonItem = wsButton
         
@@ -129,7 +129,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         showWebsite(urlstr: mainUrl)
     }
 
-    func showWebsite(urlstr: String) {
+    public func showWebsite(urlstr: String) {
         if (self.detailViewController != nil) {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let wvViewController = storyboard.instantiateViewController(withIdentifier: "webViewContainer") as? WebviewController

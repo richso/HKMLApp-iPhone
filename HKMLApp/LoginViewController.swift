@@ -23,6 +23,8 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
     
     var sak: SwissArmyKnife?
     
+    var callerController: DetailViewController?
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
@@ -173,7 +175,6 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
         if (didReceive.name == "hkmlAppCookie") {
             sak?.showActivityIndicator()
             
-            // reserve for future use
             if let d = didReceive.body as? [[String: String]] {
                 var dic = Dictionary<String, [HTTPCookiePropertyKey: Any]>()
                 
@@ -206,6 +207,14 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
                 
                 // go back to masterview
                 self.navigationController?.popViewController(animated: true)
+                
+                if (self.callerController != nil) {
+                    NSLog("@callerController is not nil")
+                    
+                    self.callerController?.webView.reload()
+                    
+                }
+                
             })
         }
     }

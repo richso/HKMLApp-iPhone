@@ -140,8 +140,19 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction
+    func onClickWebsite(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let wvViewController = storyboard.instantiateViewController(withIdentifier: "webViewContainer") as? WebviewController
+        
+        wvViewController?.detailItem = self.detailItem
+        
+        self.navigationController?.pushViewController(wvViewController!, animated: true)
+    }
         
     // MARK: - Segues
+    /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showWebsite" {
             
@@ -162,7 +173,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     
     @IBAction func unwindActionFromWebview(unwindSegue: UIStoryboardSegue) {
         // don't remove, place holder for unwin segue
-    }
+    } */
 
     // MARK: - Table View
     
@@ -333,9 +344,10 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
                             let storyboard = UIStoryboard(name: "Main", bundle: nil)
                             let loginViewController = storyboard.instantiateViewController(withIdentifier: "loginViewContainer") as? LoginViewController
                             
+                            loginViewController?.callerController = self
                             self.navigationController?.pushViewController(loginViewController!, animated: true)
                             
-                            self.tableView.reloadData()
+                            //self.tableView.reloadData()
                         }))
                         alert.addAction(UIAlertAction(title: "不要", style: .default, handler: nil))
                         present(alert, animated: true, completion: nil)
@@ -383,8 +395,10 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     }
     
     @IBAction func share(sender: UIBarButtonItem) {
+        var shareUrl = detailItem?.href ?? ""
+        shareUrl = shareUrl.replacingOccurrences(of: "%23", with: "#")
         let activityViewController = UIActivityViewController(
-            activityItems: [detailItem?.href ?? ""],
+            activityItems: [shareUrl],
             applicationActivities:nil)
         
         present(activityViewController, animated: true, completion: nil)

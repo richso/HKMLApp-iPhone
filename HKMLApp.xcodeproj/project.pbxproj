@@ -64,6 +64,7 @@
 
 /* Begin PBXFileReference section */
 		0DF2D66C98CE7679FE657AF7 /* Pods_HKMLAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HKMLAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E0023EB20247D8500F1420F /* HKMLApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HKMLApp.entitlements; sourceTree = "<group>"; };
 		0E0EDC871FB0088000EA7CC0 /* HKMLApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HKMLApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E0EDC8A1FB0088000EA7CC0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0E0EDC8C1FB0088000EA7CC0 /* WebviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebviewController.swift; sourceTree = "<group>"; };
@@ -166,6 +167,7 @@
 		0E0EDC891FB0088000EA7CC0 /* HKMLApp */ = {
 			isa = PBXGroup;
 			children = (
+				0E0023EB20247D8500F1420F /* HKMLApp.entitlements */,
 				0ED69045201B3024002DB5B2 /* getLoginStatus.js */,
 				0ED69047201B31F3002DB5B2 /* getTopModels.js */,
 				0ED69049201B32BD002DB5B2 /* getModelPhotos.js */,
@@ -329,6 +331,11 @@
 					0E0EDC861FB0088000EA7CC0 = {
 						CreatedOnToolsVersion = 9.0.1;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+						};
 					};
 					0E0EDC9A1FB0088100EA7CC0 = {
 						CreatedOnToolsVersion = 9.0.1;
@@ -754,6 +761,7 @@
 			baseConfigurationReference = A7951B236B9C21B69C90F5C0 /* Pods-HKMLApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HKMLApp/HKMLApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D86T58VH7H;
@@ -773,6 +781,7 @@
 			baseConfigurationReference = C18888402D96470B70255A0B /* Pods-HKMLApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HKMLApp/HKMLApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D86T58VH7H;

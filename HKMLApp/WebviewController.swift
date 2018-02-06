@@ -141,7 +141,9 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
     @objc
     func goPhotoCollection(_ sender: Any) {
         
-        self.performSegue(withIdentifier: "websiteUnwind", sender: sender)
+        //self.performSegue(withIdentifier: "websiteUnwind", sender: sender)
+        
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc
@@ -215,9 +217,9 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
                 let str = navigationAction.request.url?.absoluteString ?? ""
                 
                 let index = str.index(str.startIndex, offsetBy: 14)
-                let shareurl = String(str[index...])
+                let shareurl = String(str[index...]).replacingOccurrences(of:"%23", with: "#")
                 
-                NSLog(shareurl)
+                NSLog("shareUrl: " + shareurl)
                 
                 /*
                 let linkShareCnt = LinkShareContent(url: URL(string:shareurl)!)
