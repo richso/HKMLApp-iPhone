@@ -20,9 +20,12 @@
 		0E379ED01FB9746A0027B19C /* share@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E379ECE1FB9746A0027B19C /* share@3x.png */; };
 		0E3A01C21FFA2DB200192CAC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3A01C11FFA2DB200192CAC /* LoginViewController.swift */; };
 		0E3A023E1FFC9DA900192CAC /* MultipageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3A023D1FFC9DA900192CAC /* MultipageViewController.swift */; };
+		0E5743E72056309A001653AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5743E62056309A001653AC /* StringExtension.swift */; };
 		0E6235DD2016460800C67A70 /* SDToSKCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6235DC2016460800C67A70 /* SDToSKCache.swift */; };
 		0E6607261FCBB77F00B168ED /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6607231FCBB77F00B168ED /* MasterViewController.swift */; };
 		0E6607271FCBB77F00B168ED /* TopModelsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6607241FCBB77F00B168ED /* TopModelsTableViewCell.swift */; };
+		0E794942205122DB007B0A54 /* FBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E794941205122DB007B0A54 /* FBViewController.swift */; };
+		0E7949442051298A007B0A54 /* fb.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E79494320512989007B0A54 /* fb.png */; };
 		0E8E224E20163C490072CC47 /* SwissArmyKnife.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E8E224D20163C490072CC47 /* SwissArmyKnife.swift */; };
 		0EA162281FCC86D4000819AC /* splash_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA162261FCC86D3000819AC /* splash_icon@3x.png */; };
 		0EA162291FCC86D4000819AC /* splash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA162271FCC86D3000819AC /* splash_icon@2x.png */; };
@@ -84,9 +87,12 @@
 		0E379ECE1FB9746A0027B19C /* share@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "share@3x.png"; path = "images/share@3x.png"; sourceTree = "<group>"; };
 		0E3A01C11FFA2DB200192CAC /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		0E3A023D1FFC9DA900192CAC /* MultipageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipageViewController.swift; sourceTree = "<group>"; };
+		0E5743E62056309A001653AC /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		0E6235DC2016460800C67A70 /* SDToSKCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDToSKCache.swift; sourceTree = "<group>"; };
 		0E6607231FCBB77F00B168ED /* MasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		0E6607241FCBB77F00B168ED /* TopModelsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopModelsTableViewCell.swift; sourceTree = "<group>"; };
+		0E794941205122DB007B0A54 /* FBViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FBViewController.swift; sourceTree = "<group>"; };
+		0E79494320512989007B0A54 /* fb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fb.png; path = images/fb.png; sourceTree = "<group>"; };
 		0E8E224D20163C490072CC47 /* SwissArmyKnife.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwissArmyKnife.swift; sourceTree = "<group>"; };
 		0EA162261FCC86D3000819AC /* splash_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "splash_icon@3x.png"; path = "images/splash_icon@3x.png"; sourceTree = "<group>"; };
 		0EA162271FCC86D3000819AC /* splash_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "splash_icon@2x.png"; path = "images/splash_icon@2x.png"; sourceTree = "<group>"; };
@@ -182,8 +188,10 @@
 				0E3A023D1FFC9DA900192CAC /* MultipageViewController.swift */,
 				0ED94A631FE26552000BAD2E /* DetailViewController.swift */,
 				0ED94A651FE27506000BAD2E /* DetailTableViewCell.swift */,
+				0E794941205122DB007B0A54 /* FBViewController.swift */,
 				0E0EDC8C1FB0088000EA7CC0 /* WebviewController.swift */,
 				0E6235DC2016460800C67A70 /* SDToSKCache.swift */,
+				0E5743E62056309A001653AC /* StringExtension.swift */,
 				0E8E224D20163C490072CC47 /* SwissArmyKnife.swift */,
 				0E0EDC8E1FB0088000EA7CC0 /* Main.storyboard */,
 				0E0EDC911FB0088000EA7CC0 /* Assets.xcassets */,
@@ -214,6 +222,7 @@
 		0EF7BA341FB2EB41008FCB04 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E79494320512989007B0A54 /* fb.png */,
 				0EA162271FCC86D3000819AC /* splash_icon@2x.png */,
 				0EA162261FCC86D3000819AC /* splash_icon@3x.png */,
 				0E379ECD1FB974690027B19C /* share@2x.png */,
@@ -383,6 +392,7 @@
 				0EF7BA3F1FB2EB58008FCB04 /* back@3x.png in Resources */,
 				0EF7BA3B1FB2EB58008FCB04 /* forward@3x.png in Resources */,
 				0ED69046201B3024002DB5B2 /* getLoginStatus.js in Resources */,
+				0E7949442051298A007B0A54 /* fb.png in Resources */,
 				0EF7BA3D1FB2EB58008FCB04 /* forward@2x.png in Resources */,
 				0EA162291FCC86D4000819AC /* splash_icon@2x.png in Resources */,
 				0E379ECB1FB969290027B19C /* home@2x.png in Resources */,
@@ -587,11 +597,13 @@
 			files = (
 				0E3A01C21FFA2DB200192CAC /* LoginViewController.swift in Sources */,
 				0E8E224E20163C490072CC47 /* SwissArmyKnife.swift in Sources */,
+				0E794942205122DB007B0A54 /* FBViewController.swift in Sources */,
 				0E0EDC8D1FB0088000EA7CC0 /* WebviewController.swift in Sources */,
 				0E6607271FCBB77F00B168ED /* TopModelsTableViewCell.swift in Sources */,
 				0E0EDC8B1FB0088000EA7CC0 /* AppDelegate.swift in Sources */,
 				0E6607261FCBB77F00B168ED /* MasterViewController.swift in Sources */,
 				0ED94A661FE27507000BAD2E /* DetailTableViewCell.swift in Sources */,
+				0E5743E72056309A001653AC /* StringExtension.swift in Sources */,
 				0ED94A641FE26552000BAD2E /* DetailViewController.swift in Sources */,
 				0E3A023E1FFC9DA900192CAC /* MultipageViewController.swift in Sources */,
 				0E6235DD2016460800C67A70 /* SDToSKCache.swift in Sources */,

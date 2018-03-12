@@ -90,7 +90,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         
         navigationItem.leftBarButtonItem = loginButton
         
-        let wsButton = UIBarButtonItem(title: "    ", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goHome(_:)))
+        let wsButton = UIBarButtonItem(title: " ", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goHome(_:)))
         
         navigationItem.rightBarButtonItem = wsButton
         
@@ -113,6 +113,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        SDImageCache.shared().clearMemory()
     }
     
     @objc
@@ -130,15 +131,17 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
     }
 
     public func showWebsite(urlstr: String) {
-        if (self.detailViewController != nil) {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let wvViewController = storyboard.instantiateViewController(withIdentifier: "webViewContainer") as? WebviewController
-            
-            let model = Model(title: "", img: "", href: urlstr, author: "", author_href: "")
-            
-            wvViewController?.detailItem = model
-            self.navigationController?.pushViewController(wvViewController!, animated: true)
-        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let tabBarController = storyboard.instantiateViewController(withIdentifier:"tabViewController") as? UITabBarController
+        
+        let wvViewController = tabBarController?.viewControllers![0] as? WebviewController
+        
+        let model = Model(title: "", img: "", href: urlstr, author: "", author_href: "")
+        
+        wvViewController?.detailItem = model
+        
+        self.navigationController?.pushViewController(tabBarController!, animated: true)
+        
     }
     
     // MARK: - Segues
@@ -255,8 +258,10 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
                         if let modelSpec = model as? [String:Any] {
                             // NSLog(path_prefix + (modelSpec["img"] as? String)!)
                             
+                            let t_title = (modelSpec["title"] as? String)!
+                            
                             objects.append(Model(
-                                title: (modelSpec["title"] as? String)!,
+                                title: t_title.decodingHTMLEntities(),
                                 img: path_prefix + (modelSpec["img"] as? String)!,
                                 href: path_prefix + (modelSpec["href"] as? String)!,
                                 author: (modelSpec["author"] as? String)!,

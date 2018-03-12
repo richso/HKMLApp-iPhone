@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  FBviewController.swift
 //  HKMLApp
 //
 //  Created by Richard So on 6/11/2017.
@@ -11,14 +11,11 @@ import WebKit
 import FacebookShare
 import SKPhotoBrowser
 
-class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
+class FBViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
 {
     @IBOutlet weak var webView: WKWebView!
-    let html_domain = "www.hkml.net"
-    let path_prefix = "http://www.hkml.net/Discuz/"
-    let mainUrl = "http://www.hkml.net/Discuz/index.php"
-    let touchSwipe = "https://raw.githubusercontent.com/mattbryson/TouchSwipe-Jquery-Plugin/master/jquery.touchSwipe.min.js"
-    let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp.js"
+    let mainUrl = "https://m.facebook.com/groups/86899893467/"
+    let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp_fb.js"
     let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
     var targetUrl = ""
     
@@ -62,9 +59,6 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
         
         let config = webView.configuration
         
-        config.userContentController.add(self, name: "hkmlAppCookie")
-        config.userContentController.add(self, name: "hkmlAppThumbnail")
-
         let filePath = Bundle.main.path(forResource: "jquery-1.12.4.min", ofType: "js")
         var jquery = try? String(contentsOfFile: filePath!, encoding:String.Encoding.utf8) //try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
         
@@ -73,12 +67,6 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
         
         config.userContentController.addUserScript(jqScript)
         
-        let swipefilePath = Bundle.main.path(forResource: "jquery.touchSwipe.min", ofType: "js")
-        let jsTouchSwipe = try? String(contentsOfFile: swipefilePath!, encoding:String.Encoding.utf8)
-        let sTouchSwipe = WKUserScript(source: jsTouchSwipe!, injectionTime: .atDocumentStart, forMainFrameOnly: false)
-        
-        config.userContentController.addUserScript(sTouchSwipe)
-        
         let cfEnc = CFStringEncodings.big5_HKSCS_1999
         let nsEnc = CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(cfEnc.rawValue))
         let big5encoding = String.Encoding(rawValue: nsEnc) // String.Encoding
@@ -86,7 +74,7 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
         let scriptURL = hkmlAppJs + "?" + String(arc4random())
         var scriptContent = try? String(contentsOf: URL(string: scriptURL)!, encoding: big5encoding)
         if (scriptContent == nil) {
-            let scriptPath = Bundle.main.path(forResource: "hkmlApp", ofType: "js")
+            let scriptPath = Bundle.main.path(forResource: "hkmlApp_fb", ofType: "js")
             scriptContent = try? String(contentsOfFile: scriptPath!, encoding:big5encoding)
         }
 
@@ -221,11 +209,6 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
                 
                 NSLog("shareUrl: " + shareurl)
                 
-                /*
-                let linkShareCnt = LinkShareContent(url: URL(string:shareurl)!)
-                
-                try! ShareDialog.show(from: self, content: linkShareCnt)
-                */
                 let activityViewController = UIActivityViewController(
                     activityItems: [URL(string: shareurl) ?? ""],
                     applicationActivities:nil)
@@ -234,22 +217,16 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
 
                 decisionHandler(WKNavigationActionPolicy.cancel)
                 
-            } else if ((navigationAction.request.url?.host!.lowercased().hasSuffix("facebook.com"))!) {
+            } else if ((navigationAction.request.url?.host!.lowercased().hasPrefix("www.hkml.net"))!) {
                 
-                let fbViewController = tabBarController?.viewControllers![1] as? FBViewController
+                let wvViewController = tabBarController?.viewControllers![0] as? WebviewController
                 
-                if (fbViewController?.webView == nil) {
-                    let urlstr = navigationAction.request.url?.absoluteString
-                    let model = MasterViewController.Model(title: "", img: "", href: urlstr!, author: "", author_href: "")
-                    fbViewController?.detailItem = model
-                } else {
-                    fbViewController?.webView.load(URLRequest(url: navigationAction.request.url!))
-                }
-
-                tabBarController?.selectedIndex = 1
+                wvViewController?.webView.load(URLRequest(url: navigationAction.request.url!))
+                
+                tabBarController?.selectedIndex = 0
                 decisionHandler(WKNavigationActionPolicy.cancel)
 
-            } else if (!(navigationAction.request.url?.host!.lowercased().hasPrefix(html_domain))!) {
+            } else if (!((navigationAction.request.url?.host!.lowercased().hasSuffix("facebook.com"))!)) {
                 UIApplication.shared.open(navigationAction.request.url!)
                 decisionHandler(WKNavigationActionPolicy.cancel)
             } else {
@@ -294,7 +271,7 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
     func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo,
                  completionHandler: @escaping (String?) -> Void) {
         
-        let alertController = UIAlertController(title: nil, message: prompt, preferredStyle: .alert)
+        let alertController = UIAlertController(title: nil, message: prompt, preferredStyle: .actionSheet)
         
         alertController.addTextField { (textField) in
             textField.text = defaultText
@@ -315,75 +292,32 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
         present(alertController, animated: true, completion: nil)
     }
     
-    
-    // WKScriptMessageHandler
-    
-    func userContentController(_ userContentController: WKUserContentController, didReceive: WKScriptMessage) {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         
-        if (didReceive.name == "hkmlAppCookie") {
-            // reserve for future use
-            if let d = didReceive.body as? [[String: String]] {
-                var dic = Dictionary<String, [HTTPCookiePropertyKey: Any]>()
+        if (navigationAction.targetFrame == nil) {
+            
+            let urlstr = navigationAction.request.url?.absoluteString.lowercased()
+
+            if ((navigationAction.request.url?.host!.hasPrefix("lm.facebook.com"))!) {
                 
-                NSLog("@cookies before stored to default store")
+                if (urlstr?.contains("www.hkml.net"))! {
                 
-                var dateComponent = DateComponents()
-                dateComponent.day = 365
-                
-                for cookie in d {
-                    if (cookie["name"]!.hasPrefix("ppl_")) {
-                        dic[cookie["name"]!] = [HTTPCookiePropertyKey: Any]()
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.name] = cookie["name"]
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.value] = cookie["value"]
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.path] = "/Discuz/"
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.domain] = "hkml.net"
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.expires] = Calendar.current.date(byAdding: dateComponent, to: Date())
-                    }
+                    let wvViewController = tabBarController?.viewControllers![0] as? WebviewController
+                    
+                    wvViewController?.webView.load(URLRequest(url: navigationAction.request.url!))
+                    
+                    tabBarController?.selectedIndex = 0
+                    
+                } else {
+                    UIApplication.shared.open(navigationAction.request.url!)
                 }
-                UserDefaults.standard.set(dic, forKey:"cookies")
-                UserDefaults.standard.synchronize()
-                NSLog("@cookies stored to default store")
+            } else if (!((navigationAction.request.url?.host!.lowercased().hasSuffix("facebook.com"))!)) {
+                UIApplication.shared.open(navigationAction.request.url!)
+            } else {
+                webView.load(URLRequest(url: navigationAction.request.url!))
             }
         }
-        
-        if (didReceive.name == "hkmlAppThumbnail") {
-            NSLog("@Photo Slide")
-            
-            httpCookieFromArray()
-            
-            if let d = didReceive.body as? [String: Any] {
-                let curIdx = d["idx"] as? NSInteger
-                let imgurls = d["images"] as? [String]
-                
-                var images = [SKPhoto]()
-                for idx in 0...(imgurls?.count)!-1 {
-                    NSLog("@idx: %d, " + imgurls![idx], idx)
-                    var imgsrc = imgurls![idx]
-                    if (!(imgsrc.hasPrefix("http:") || imgsrc.hasPrefix("https:"))) {
-                        imgsrc = path_prefix + imgsrc
-                    }
-                    let photo = SKPhoto.photoWithImageURL(imgsrc)
-                    images.append(photo)
-                    photo.shouldCachePhotoURLImage = true
-                }
-                
-                let browser = SKPhotoBrowser(photos: images)
-                browser.initializePageIndex(curIdx!)
-                present(browser, animated: true, completion: {})
-            }
-        }
-    }
-    
-    func httpCookieFromArray() {
-        let cookies_tmp = UserDefaults.standard.value(forKey: "cookies")
-        
-        if (cookies_tmp != nil) {
-            let cookies = cookies_tmp as! Dictionary<String, [HTTPCookiePropertyKey : Any]>
-            
-            for (_, properties) in cookies {
-                HTTPCookieStorage.shared.setCookie(HTTPCookie.init(properties: properties)!)
-            }
-        }
+        return nil
     }
 }
 

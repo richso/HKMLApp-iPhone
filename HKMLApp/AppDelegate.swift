@@ -57,6 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         return false
     }
     
+    // deep link call
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
         if (userActivity.activityType == NSUserActivityTypeBrowsingWeb) {
             let url = userActivity.webpageURL

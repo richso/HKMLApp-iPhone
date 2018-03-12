@@ -120,11 +120,6 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         httpCookieFromArray()
         webView.load(URLRequest(url:URL(string:targetUrl)!))
 
-        //if let split = splitViewController {
-        //    let controllers = split.viewControllers
-        //    detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ViewController
-        //}
-        
     }
 
     @objc private func refreshTableData(_ sender: Any) {
@@ -139,42 +134,22 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        SDImageCache.shared().clearMemory()
     }
     
     @IBAction
     func onClickWebsite(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let wvViewController = storyboard.instantiateViewController(withIdentifier: "webViewContainer") as? WebviewController
+        
+        let tabBarController = storyboard.instantiateViewController(withIdentifier:"tabViewController") as? UITabBarController
+        
+        let wvViewController = tabBarController?.viewControllers![0] as? WebviewController
         
         wvViewController?.detailItem = self.detailItem
         
-        self.navigationController?.pushViewController(wvViewController!, animated: true)
+        self.navigationController?.pushViewController(tabBarController!, animated: true)
     }
         
-    // MARK: - Segues
-    /*
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showWebsite" {
-            
-            detailViewController = (segue.destination as!  UINavigationController).topViewController as? WebviewController
-            
-            detailViewController?.parentController = self
-            
-            if sender as? String == "login" {
-                detailViewController?.detailItem = MasterViewController.Model(title: "", img: "", href: loginUrl, author: "", author_href: "")
-            } else {
-                detailViewController?.detailItem = self.detailItem
-            }
-            
-            detailViewController?.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-            detailViewController?.navigationItem.leftItemsSupplementBackButton = true
-        }
-    }
-    
-    @IBAction func unwindActionFromWebview(unwindSegue: UIStoryboardSegue) {
-        // don't remove, place holder for unwin segue
-    } */
-
     // MARK: - Table View
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -295,7 +270,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
             // todo: make a loading indicator??
         }
         if (keyPath == "title") {
-            title = webView.title
+            title = webView.title?.decodingHTMLEntities()
         }
     }
     
@@ -339,7 +314,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
                         self.refreshControl?.endRefreshing()
                         self.sak?.hideActivityIndicator()
                         let alert = UIAlertController(title: "注意", message: "此項目相片必須於登入後才提供，要登入嗎？", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "要", style: .default, handler: { (action) in
+                        alert.addAction(UIAlertAction(title: "登入", style: .default, handler: { (action) in
                             
                             let storyboard = UIStoryboard(name: "Main", bundle: nil)
                             let loginViewController = storyboard.instantiateViewController(withIdentifier: "loginViewContainer") as? LoginViewController
@@ -349,7 +324,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
                             
                             //self.tableView.reloadData()
                         }))
-                        alert.addAction(UIAlertAction(title: "不要", style: .default, handler: nil))
+                        alert.addAction(UIAlertAction(title: "不登入", style: .default, handler: nil))
                         present(alert, animated: true, completion: nil)
                         return
                     }

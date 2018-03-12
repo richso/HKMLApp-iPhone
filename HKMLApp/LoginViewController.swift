@@ -202,7 +202,7 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
             }
             
             // let some seconds for cookie sync
-            sak?.setTimeout(6, block: {
+            sak?.setTimeout(10, block: {
                 self.sak?.hideActivityIndicator()
                 
                 // go back to masterview
