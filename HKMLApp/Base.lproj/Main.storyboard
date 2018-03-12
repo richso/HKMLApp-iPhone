@@ -122,7 +122,7 @@
                             <outlet property="delegate" destination="pNn-6t-jzZ" id="Ruv-3g-lVn"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="傑作相片集" id="xAx-e1-7ix"/>
+                    <navigationItem key="navigationItem" title="Masterpiece Photo Gallery" id="xAx-e1-7ix"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w0R-wd-1hM" sceneMemberID="firstResponder"/>
             </objects>
@@ -232,7 +232,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="xRm-Xc-eea"/>
-                                    <barButtonItem title="網上版" id="klj-Ba-Sdr">
+                                    <barButtonItem title="Webpage" id="klj-Ba-Sdr">
                                         <connections>
                                             <action selector="onClickWebsite:" destination="Ufx-gE-KyT" id="XV2-0G-mMf"/>
                                         </connections>
@@ -277,10 +277,10 @@
             </objects>
             <point key="canvasLocation" x="-826" y="-806"/>
         </scene>
-        <!--登入-->
+        <!--Login-->
         <scene sceneID="NGW-V9-y6x">
             <objects>
-                <viewController storyboardIdentifier="loginViewContainer" id="W1y-RF-bQT" customClass="LoginViewController" customModule="HKMLApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginViewContainer" id="W1y-RF-bQT" userLabel="Login" customClass="LoginViewController" customModule="HKMLApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eoY-Af-bjX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -310,7 +310,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="OMp-Tx-82g"/>
                     </view>
-                    <navigationItem key="navigationItem" title="登入" id="war-eH-k0P"/>
+                    <navigationItem key="navigationItem" title="Login" id="war-eH-k0P" userLabel="Login"/>
                     <connections>
                         <outlet property="progressView" destination="ELE-Hh-5V5" id="oaU-ZW-fvN"/>
                         <outlet property="webView" destination="HtV-z4-LQe" id="cl0-iu-SoH"/>

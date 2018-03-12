@@ -1,0 +1,34 @@
+/* Class = "UIButton"; normalTitle = "X"; ObjectID = "0e5-cP-Tmi"; */
+"0e5-cP-Tmi.normalTitle" = "X";
+
+/* Class = "UIBarButtonItem"; title = "Share"; ObjectID = "9Cr-s9-0WH"; */
+"9Cr-s9-0WH.title" = "分享";
+
+/* Class = "UINavigationController"; title = "Master"; ObjectID = "Cmf-0u-oIG"; */
+"Cmf-0u-oIG.title" = "Master";
+
+/* Class = "UILabel"; text = "title"; ObjectID = "ELB-3g-qr3"; */
+"ELB-3g-qr3.text" = "title";
+
+/* Class = "UIButton"; normalTitle = "X"; ObjectID = "JMJ-NM-Nk3"; */
+"JMJ-NM-Nk3.normalTitle" = "X";
+
+/* Class = "UITabBarItem"; title = "Facebook"; ObjectID = "iLv-Ot-lTT"; */
+"iLv-Ot-lTT.title" = "Facebook";
+
+/* Class = "UIBarButtonItem"; title = "Webpage"; ObjectID = "klj-Ba-Sdr"; */
+"klj-Ba-Sdr.title" = "網上版";
+
+/* Class = "UITableViewController"; title = "Master"; ObjectID = "pNn-6t-jzZ"; */
+"pNn-6t-jzZ.title" = "Master";
+
+/* Class = "UITabBarItem"; title = "Forum"; ObjectID = "vsh-6P-rSi"; */
+"vsh-6P-rSi.title" = "論壇";
+
+/* Class = "UINavigationItem"; title = "Login"; ObjectID = "war-eH-k0P"; */
+"war-eH-k0P.title" = "登入";
+
+/* Class = "UINavigationItem"; title = "Masterpiece Photo Gallery"; ObjectID = "xAx-e1-7ix"; */
+"xAx-e1-7ix.title" = "傑作相片集";
+
+

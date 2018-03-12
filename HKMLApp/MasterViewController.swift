@@ -86,7 +86,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         sak?.showActivityIndicator()
         webView.load(URLRequest(url:URL(string:topTenUrl)!))
 
-        let loginButton = UIBarButtonItem(title: "登入", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goLogin(_:)))
+        let loginButton = UIBarButtonItem(title: NSLocalizedString("Login", comment: "Login"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(goLogin(_:)))
         
         navigationItem.leftBarButtonItem = loginButton
         
