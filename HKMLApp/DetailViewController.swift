@@ -319,7 +319,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
                             let storyboard = UIStoryboard(name: "Main", bundle: nil)
                             let loginViewController = storyboard.instantiateViewController(withIdentifier: "loginViewContainer") as? LoginViewController
                             
-                            loginViewController?.callerController = self
+                            //loginViewController?.callerController = self
                             self.navigationController?.pushViewController(loginViewController!, animated: true)
                             
                             //self.tableView.reloadData()

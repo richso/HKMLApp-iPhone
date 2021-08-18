@@ -6,7 +6,7 @@
 //  Copyright © 2016年 suzuki_keishi. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 @objc public protocol SKPhotoBrowserDelegate {
     
@@ -74,7 +74,17 @@ import Foundation
     
     /**
      Tells the delegate that the controls view toggled visibility
+     
+     - Parameter browser: reference to the calling SKPhotoBrowser
+     - Parameter hidden: the status of visibility control
      */
     @objc optional func controlsVisibilityToggled(_ browser: SKPhotoBrowser, hidden: Bool)
+    
+    /**
+     Allows  the delegate to create its own caption view
+     
+     - Parameter index: the index of the photo
+     */
+    @objc optional func captionViewForPhotoAtIndex(index: Int) -> SKCaptionView?
 }
 

@@ -9,23 +9,22 @@
 import UIKit
 
 @objc public protocol SKPhotoProtocol: NSObjectProtocol {
+    var index: Int { get set }
     var underlyingImage: UIImage! { get }
-    var caption: String! { get }
-    var index: Int { get set}
-    var contentMode: UIViewContentMode { get set }
+    var caption: String? { get }
+    var contentMode: UIView.ContentMode { get set }
     func loadUnderlyingImageAndNotify()
     func checkCache()
 }
 
 // MARK: - SKPhoto
 open class SKPhoto: NSObject, SKPhotoProtocol {
-    
-    open var underlyingImage: UIImage!
-    open var photoURL: String!
-    open var contentMode: UIViewContentMode = .scaleAspectFill
-    open var shouldCachePhotoURLImage: Bool = false
-    open var caption: String!
     open var index: Int = 0
+    open var underlyingImage: UIImage!
+    open var caption: String?
+    open var contentMode: UIView.ContentMode = .scaleAspectFill
+    open var shouldCachePhotoURLImage: Bool = false
+    open var photoURL: String!
 
     override init() {
         super.init()
@@ -71,11 +70,10 @@ open class SKPhoto: NSObject, SKPhotoProtocol {
         guard photoURL != nil, let URL = URL(string: photoURL) else { return }
         
         // Fetch Image
-        let session = URLSession(configuration: URLSessionConfiguration.default)
+        let session = URLSession(configuration: SKPhotoBrowserOptions.sessionConfiguration)
             var task: URLSessionTask?
             task = session.dataTask(with: URL, completionHandler: { [weak self] (data, response, error) in
-                guard let `self` = self else { return }
-                
+                guard let self = self else { return }
                 defer { session.finishTasksAndInvalidate() }
 
                 guard error == nil else {
@@ -85,7 +83,7 @@ open class SKPhoto: NSObject, SKPhotoProtocol {
                     return
                 }
 
-                if let data = data, let response = response, let image = UIImage(data: data) {
+                if let data = data, let response = response, let image = UIImage.animatedImage(withAnimatedGIFData: data) {
                     if self.shouldCachePhotoURLImage {
                         if SKCache.sharedCache.imageCache is SKRequestResponseCacheable {
                             SKCache.sharedCache.setImageData(data, response: response, request: task?.originalRequest)

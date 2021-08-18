@@ -10,6 +10,10 @@ import SKPhotoBrowser
 import SDWebImage
 
 class SDToSKCache: SKImageCacheable {
+    func removeAllImages() {
+        cache.clearMemory()
+    }
+    
 
     var cache: SDImageCache
     

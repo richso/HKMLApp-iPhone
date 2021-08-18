@@ -6,12 +6,13 @@ target 'HKMLApp' do
   use_frameworks!
 
   # Pods for HKMLApp
-  pod 'FacebookCore'
-  pod 'FacebookLogin'
-  pod 'FacebookShare'
+  #pod 'FacebookCore'
+  #pod 'FacebookLogin'
+  #pod 'FacebookShare'
   pod 'SKPhotoBrowser'
   
-  pod 'SDWebImage', '~> 4.0'
+  pod 'SDWebImage'
+  #, '~> 4.0'
 
   target 'HKMLAppTests' do
     inherit! :search_paths

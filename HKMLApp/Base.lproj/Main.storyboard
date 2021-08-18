@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="rZb-PC-8qn">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="rZb-PC-8qn">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -45,10 +43,11 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="QSW-9u-T0h">
-                                <rect key="frame" x="0.0" y="44" width="375" height="2"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="4"/>
                                 <color key="progressTintColor" red="0.93333333330000001" green="0.3411764706" blue="0.1019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="WD9-Gd-q6G"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="qaD-XQ-3vE" firstAttribute="bottom" secondItem="WD9-Gd-q6G" secondAttribute="bottom" id="1oR-Uh-MOc"/>
@@ -59,12 +58,11 @@
                             <constraint firstItem="QSW-9u-T0h" firstAttribute="leading" secondItem="AhJ-Q2-tTg" secondAttribute="leading" id="uWu-K4-TnG"/>
                             <constraint firstItem="WD9-Gd-q6G" firstAttribute="top" secondItem="QSW-9u-T0h" secondAttribute="top" id="w09-1S-wLP"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="WD9-Gd-q6G"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Forum" image="home.png" id="vsh-6P-rSi"/>
                     <navigationItem key="navigationItem" id="ebG-qV-Iuy">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="uGR-5g-Ign">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="JMJ-NM-Nk3">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="JMJ-NM-Nk3">
                                 <rect key="frame" x="16" y="7" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="X"/>
@@ -90,10 +88,10 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopModelsTableViewCell" rowHeight="90" id="k64-0p-Oud" customClass="TopModelsTableViewCell" customModule="HKMLApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                                <rect key="frame" x="0.0" y="24.333333969116211" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="k64-0p-Oud" id="tDc-EP-4uM">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.666666666666671"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RKM-GJ-fdc">
@@ -164,8 +162,8 @@
                     <view key="view" contentMode="scaleToFill" id="MvD-a4-5BH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="7VW-7s-2Ho"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vMU-e1-FPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -193,10 +191,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DetailTableViewCell" rowHeight="200" id="QCN-vK-ywJ" customClass="DetailTableViewCell" customModule="HKMLApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="200"/>
+                                        <rect key="frame" x="0.0" y="24.333333969116211" width="375" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QCN-vK-ywJ" id="0Fr-QH-Nwl">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="199.66666666666666"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lzY-fd-jE4">
@@ -240,6 +238,7 @@
                                 </items>
                             </toolbar>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="bnm-xM-tH0"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="tec-SQ-w9c" firstAttribute="top" secondItem="bnm-xM-tH0" secondAttribute="top" id="AGy-Lm-UMo"/>
@@ -250,7 +249,6 @@
                             <constraint firstItem="cLG-UW-4XQ" firstAttribute="top" secondItem="tec-SQ-w9c" secondAttribute="bottom" id="kQJ-ai-Twt"/>
                             <constraint firstAttribute="trailing" secondItem="cLG-UW-4XQ" secondAttribute="trailing" id="vhS-or-xTQ"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="bnm-xM-tH0"/>
                     </view>
                     <navigationItem key="navigationItem" id="c1m-RX-fhQ"/>
                     <connections>
@@ -294,10 +292,11 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ELE-Hh-5V5">
-                                <rect key="frame" x="0.0" y="86" width="375" height="2"/>
+                                <rect key="frame" x="0.0" y="84" width="375" height="4"/>
                                 <color key="progressTintColor" red="0.93333333330000001" green="0.3411764706" blue="0.1019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="OMp-Tx-82g"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="HtV-z4-LQe" firstAttribute="top" secondItem="ELE-Hh-5V5" secondAttribute="bottom" id="4A1-ea-7HP"/>
@@ -308,7 +307,6 @@
                             <constraint firstItem="ELE-Hh-5V5" firstAttribute="leading" secondItem="eoY-Af-bjX" secondAttribute="leading" id="fMw-sw-nl6"/>
                             <constraint firstAttribute="trailing" secondItem="ELE-Hh-5V5" secondAttribute="trailing" id="icV-4H-d2W"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="OMp-Tx-82g"/>
                     </view>
                     <navigationItem key="navigationItem" title="Login" id="war-eH-k0P" userLabel="Login"/>
                     <connections>
@@ -337,10 +335,11 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5Ur-PJ-Xlq">
-                                <rect key="frame" x="0.0" y="44" width="375" height="2"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="4"/>
                                 <color key="progressTintColor" red="0.93333333330000001" green="0.3411764706" blue="0.1019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="HVy-xo-HzD"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="5Ur-PJ-Xlq" firstAttribute="leading" secondItem="mMh-SQ-92e" secondAttribute="leading" id="288-QJ-k0a"/>
@@ -351,12 +350,11 @@
                             <constraint firstItem="0LO-wP-dZP" firstAttribute="bottom" secondItem="HVy-xo-HzD" secondAttribute="bottom" id="wuq-jf-t7E"/>
                             <constraint firstItem="5Ur-PJ-Xlq" firstAttribute="top" secondItem="HVy-xo-HzD" secondAttribute="top" id="ycd-Z5-97P"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="HVy-xo-HzD"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Facebook" image="fb.png" id="iLv-Ot-lTT"/>
                     <navigationItem key="navigationItem" id="Anc-dt-QiH">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="Jxr-X5-GbB">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0e5-cP-Tmi">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="0e5-cP-Tmi">
                                 <rect key="frame" x="16" y="7" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="X"/>
@@ -375,7 +373,7 @@
     </scenes>
     <resources>
         <image name="fb.png" width="30" height="30"/>
-        <image name="home.png" width="34" height="34"/>
-        <image name="share.png" width="24" height="34"/>
+        <image name="home.png" width="73.44000244140625" height="73.44000244140625"/>
+        <image name="share.png" width="24.666666030883789" height="34"/>
     </resources>
 </document>

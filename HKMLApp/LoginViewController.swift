@@ -8,7 +8,7 @@
 
 import UIKit
 import WebKit
-import FacebookShare
+//import FacebookShare
 
 class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 {

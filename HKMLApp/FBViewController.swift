@@ -8,7 +8,7 @@
 
 import UIKit
 import WebKit
-import FacebookShare
+//import FacebookShare
 import SKPhotoBrowser
 
 class FBViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
