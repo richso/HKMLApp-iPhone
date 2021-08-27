@@ -21,6 +21,9 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
     let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
     var loginUrl = "http://www.hkml.net/Discuz/logging.php?action=login"
     
+    var wkProcessPool: WKProcessPool?
+    var masterController: MasterViewController?
+    
     var sak: SwissArmyKnife?
     
     var callerController: DetailViewController?
@@ -37,11 +40,11 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
         sak = SwissArmyKnife(loaderParentView: self.view)
         
         let config = webView.configuration
-        
+        config.processPool = (self.wkProcessPool)!
         config.userContentController.add(self, name: "hkmlAppCookie")
 
         let filePath = Bundle.main.path(forResource: "jquery-1.12.4.min", ofType: "js")
-        var jquery = try? String(contentsOfFile: filePath!, encoding:String.Encoding.utf8) //try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
+        var jquery = try? String(contentsOfFile: filePath!, encoding:String.Encoding.utf8)
         jquery = (jquery!) + " $j=jQuery.noConflict();";
         let jqScript = WKUserScript(source: jquery!, injectionTime: .atDocumentStart, forMainFrameOnly: false)
         
@@ -173,49 +176,17 @@ class LoginViewController: UIViewController, WKNavigationDelegate, WKUIDelegate,
     func userContentController(_ userContentController: WKUserContentController, didReceive: WKScriptMessage) {
         
         if (didReceive.name == "hkmlAppCookie") {
-            sak?.showActivityIndicator()
+            // NOTE: already use new code to sync cookie, use same cookie store
             
-            if let d = didReceive.body as? [[String: String]] {
-                var dic = Dictionary<String, [HTTPCookiePropertyKey: Any]>()
+            self.performSegue(withIdentifier: "unwindToLastViewController", sender: self)
+            
+            if (self.callerController != nil && self.callerController?.webView != nil) {
+                NSLog("@callerController webview is not nil")
                 
-                NSLog("@cookies before stored to default store")
-                
-                var dateComponent = DateComponents()
-                dateComponent.day = 365
-                
-                for cookie in d {
-                    if (cookie["name"]!.hasPrefix("ppl_")) {
-                        NSLog("cookie: " + cookie["name"]!)
-                        
-                        dic[cookie["name"]!] = [HTTPCookiePropertyKey: Any]()
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.name] = cookie["name"]
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.value] = cookie["value"]
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.path] = "/Discuz/"
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.domain] = "hkml.net"
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.expires] = Calendar.current.date(byAdding: dateComponent, to: Date())
-                    }
-                }
-                UserDefaults.standard.set(dic, forKey:"cookies")
-                UserDefaults.standard.synchronize()
-                NSLog("@cookies stored to default store")
+                self.callerController?.webView.reload()
                 
             }
             
-            // let some seconds for cookie sync
-            sak?.setTimeout(10, block: {
-                self.sak?.hideActivityIndicator()
-                
-                // go back to masterview
-                self.navigationController?.popViewController(animated: true)
-                
-                if (self.callerController != nil) {
-                    NSLog("@callerController is not nil")
-                    
-                    self.callerController?.webView.reload()
-                    
-                }
-                
-            })
         }
     }
     

@@ -12,6 +12,7 @@
         <scene sceneID="3TJ-AQ-iis">
             <objects>
                 <tabBarController storyboardIdentifier="tabViewController" id="Lp5-WE-ZNs" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="USZ-Xl-T9D"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="eBG-ga-Mkv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -31,11 +32,11 @@
             <objects>
                 <viewController storyboardIdentifier="webViewContainer" id="BYZ-38-t0r" customClass="WebviewController" customModule="HKMLApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="AhJ-Q2-tTg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qaD-XQ-3vE">
-                                <rect key="frame" x="0.0" y="44" width="375" height="685"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="675"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration" allowsInlineMediaPlayback="YES">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -43,7 +44,7 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="QSW-9u-T0h">
-                                <rect key="frame" x="0.0" y="44" width="375" height="4"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="4"/>
                                 <color key="progressTintColor" red="0.93333333330000001" green="0.3411764706" blue="0.1019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>
                         </subviews>
@@ -63,7 +64,6 @@
                     <navigationItem key="navigationItem" id="ebG-qV-Iuy">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="uGR-5g-Ign">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="JMJ-NM-Nk3">
-                                <rect key="frame" x="16" y="7" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="X"/>
                             </button>
@@ -95,11 +95,11 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RKM-GJ-fdc">
-                                            <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="90" height="102"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELB-3g-qr3">
-                                            <rect key="frame" x="98" y="0.0" width="271" height="90"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" text="title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELB-3g-qr3">
+                                            <rect key="frame" x="98" y="12" width="224" height="90"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <nil key="textColor"/>
@@ -110,7 +110,6 @@
                                 <connections>
                                     <outlet property="imageThumb" destination="RKM-GJ-fdc" id="VWC-KX-R51"/>
                                     <outlet property="title" destination="ELB-3g-qr3" id="CPB-in-hvk"/>
-                                    <segue destination="XjD-Zb-maL" kind="showDetail" identifier="showDetail" id="6aP-in-FVh"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -121,6 +120,12 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Masterpiece Photo Gallery" id="xAx-e1-7ix"/>
+                    <connections>
+                        <segue destination="qJl-Dp-6TR" kind="showDetail" identifier="showDetail" id="ved-IN-LEO"/>
+                        <segue destination="W1y-RF-bQT" kind="presentation" identifier="login" id="19z-iP-SCh"/>
+                        <segue destination="Lp5-WE-ZNs" kind="show" identifier="showWebsite" id="Vaz-Pw-tOp"/>
+                        <segue destination="Lp5-WE-ZNs" kind="presentation" identifier="showWebsiteModal" modalTransitionStyle="flipHorizontal" id="ySO-CD-iUS"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w0R-wd-1hM" sceneMemberID="firstResponder"/>
             </objects>
@@ -129,7 +134,7 @@
         <!--Split View Controller-->
         <scene sceneID="wvX-7W-hYX">
             <objects>
-                <splitViewController id="rZb-PC-8qn" sceneMemberID="viewController">
+                <splitViewController allowDoubleColumnStyle="YES" preferredDisplayMode="beside" id="rZb-PC-8qn" sceneMemberID="viewController">
                     <toolbarItems/>
                     <connections>
                         <segue destination="Cmf-0u-oIG" kind="relationship" relationship="masterViewController" id="LIo-mV-9FV"/>
@@ -165,10 +170,11 @@
                         <viewLayoutGuide key="safeArea" id="7VW-7s-2Ho"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <navigationItem key="navigationItem" id="xMS-Fv-vnD"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vMU-e1-FPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1697" y="981"/>
+            <point key="canvasLocation" x="-1201" y="1034"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="Wi8-8g-zau">
@@ -176,7 +182,7 @@
                 <pageViewController storyboardIdentifier="PageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="ah3-Fp-D0l" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R2J-J6-4mE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-862" y="983"/>
+            <point key="canvasLocation" x="1076" y="982.75862068965523"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="E7q-LE-Ef7">
@@ -253,11 +259,12 @@
                     <navigationItem key="navigationItem" id="c1m-RX-fhQ"/>
                     <connections>
                         <outlet property="tableView" destination="tec-SQ-w9c" id="cJd-SY-40h"/>
+                        <segue destination="W1y-RF-bQT" kind="presentation" identifier="login" id="58y-Kt-OSD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bkB-CO-TDs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="57" y="983"/>
+            <point key="canvasLocation" x="1996" y="982.75862068965523"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Oa5-pP-E29">
@@ -280,11 +287,11 @@
             <objects>
                 <viewController storyboardIdentifier="loginViewContainer" id="W1y-RF-bQT" userLabel="Login" customClass="LoginViewController" customModule="HKMLApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eoY-Af-bjX">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HtV-z4-LQe">
-                                <rect key="frame" x="0.0" y="88" width="375" height="724"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration" allowsInlineMediaPlayback="YES">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -292,7 +299,7 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ELE-Hh-5V5">
-                                <rect key="frame" x="0.0" y="84" width="375" height="4"/>
+                                <rect key="frame" x="0.0" y="-4" width="375" height="4"/>
                                 <color key="progressTintColor" red="0.93333333330000001" green="0.3411764706" blue="0.1019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>
                         </subviews>
@@ -312,22 +319,24 @@
                     <connections>
                         <outlet property="progressView" destination="ELE-Hh-5V5" id="oaU-ZW-fvN"/>
                         <outlet property="webView" destination="HtV-z4-LQe" id="cl0-iu-SoH"/>
+                        <segue destination="9UN-RI-KPc" kind="unwind" identifier="unwindToLastViewController" unwindAction="unwindWithUnwindSegue:" id="16V-hR-zwp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sZZ-ve-3Aq" sceneMemberID="firstResponder"/>
+                <exit id="9UN-RI-KPc" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="13.6" y="-806.1576354679803"/>
+            <point key="canvasLocation" x="1174" y="-806"/>
         </scene>
         <!--Facebook-->
         <scene sceneID="kpJ-4f-V7n">
             <objects>
                 <viewController storyboardIdentifier="FBViewContainer" id="PuK-PG-LeT" customClass="FBViewController" customModule="HKMLApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mMh-SQ-92e">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="758"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0LO-wP-dZP">
-                                <rect key="frame" x="0.0" y="44" width="375" height="685"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="675"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration" allowsInlineMediaPlayback="YES">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -335,7 +344,7 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5Ur-PJ-Xlq">
-                                <rect key="frame" x="0.0" y="44" width="375" height="4"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="4"/>
                                 <color key="progressTintColor" red="0.93333333330000001" green="0.3411764706" blue="0.1019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>
                         </subviews>
@@ -355,7 +364,6 @@
                     <navigationItem key="navigationItem" id="Anc-dt-QiH">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="Jxr-X5-GbB">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="0e5-cP-Tmi">
-                                <rect key="frame" x="16" y="7" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="X"/>
                             </button>
@@ -370,7 +378,32 @@
             </objects>
             <point key="canvasLocation" x="13.6" y="2493.8423645320199"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="VBa-Rx-zde">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qJl-Dp-6TR" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xE4-wA-afH">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="98a-DO-nME">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="XjD-Zb-maL" kind="relationship" relationship="rootViewController" id="8NR-NK-Kzg"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OdE-31-toy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2167" y="1034"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="19z-iP-SCh"/>
+        <segue reference="ySO-CD-iUS"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="fb.png" width="30" height="30"/>
         <image name="home.png" width="73.44000244140625" height="73.44000244140625"/>

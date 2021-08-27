@@ -12,7 +12,7 @@ target 'HKMLApp' do
   pod 'SKPhotoBrowser'
   
   pod 'SDWebImage'
-  #, '~> 4.0'
+  #, '~> 5.11'
 
   target 'HKMLAppTests' do
     inherit! :search_paths

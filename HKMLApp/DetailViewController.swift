@@ -30,6 +30,9 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     var pageIndex: NSInteger!
     var multiController: MultipageViewController!
     var webView : WKWebView!
+    var wkProcessPool: WKProcessPool!
+    
+    let myName = "DetailViewController"
     
     let path_prefix = "http://www.hkml.net/Discuz/"
     let mainUrl = "http://www.hkml.net/Discuz/index.php"
@@ -42,6 +45,8 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     var userContentController : WKUserContentController!
     
     var sak: SwissArmyKnife?
+    
+    var cookie_str: String?
     
     var detailItem: MasterViewController.Model? {
         didSet {
@@ -57,13 +62,15 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         SKCache.sharedCache.imageCache = SDToSKCache()
 
         tableView.estimatedRowHeight = 44.0
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         
         refreshControl = UIRefreshControl()
         tableView.addSubview(refreshControl!)
         refreshControl?.addTarget(self, action: #selector(refreshTableData(_:)), for: .valueChanged)
 
         let config = WKWebViewConfiguration()
+        
+        config.processPool = self.wkProcessPool!
         userContentController = WKUserContentController()
         config.userContentController = userContentController
         webView = WKWebView(frame: CGRect.zero, configuration: config)
@@ -101,24 +108,16 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         
         webView.addObserver(self, forKeyPath: "title", options: .new, context: nil)
         
-        sak?.showActivityIndicator()
-        
-        let cookies_tmp = UserDefaults.standard.value(forKey: "cookies")
-        
-        if (cookies_tmp != nil) {
-            let cookies = cookies_tmp as! Dictionary<String, [HTTPCookiePropertyKey : Any]>
-            
-            for (key, properties) in cookies {
-                let cookie = HTTPCookie(properties: properties)
-                
-                NSLog("@load key: " + key + " value: " + (properties[HTTPCookiePropertyKey.value] as? String)!)
-                
-                WKWebsiteDataStore.default().httpCookieStore.setCookie(cookie!, completionHandler: nil)
-            }
-        }
-        
-        httpCookieFromArray()
         webView.load(URLRequest(url:URL(string:targetUrl)!))
+
+        // NOTE: getAllCoookies is an async call, place here before starting the fetch of photo urls from webview (slower process) to allow it to finish before placing the image fetch requests; better to use "await" when Swift5.5 is available
+        self.cookie_str = ""
+        self.webView.configuration.websiteDataStore.httpCookieStore.getAllCookies({
+                (cookies) in
+                    for (cookie) in cookies {
+                        self.cookie_str! += cookie.name + "=" + cookie.value + "; "
+                    }
+            })
 
     }
 
@@ -139,6 +138,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     
     @IBAction
     func onClickWebsite(_ sender: Any) {
+        /*
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let tabBarController = storyboard.instantiateViewController(withIdentifier:"tabViewController") as? UITabBarController
@@ -148,6 +148,9 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         wvViewController?.detailItem = self.detailItem
         
         self.navigationController?.pushViewController(tabBarController!, animated: true)
+        */
+        
+        self.detailItem?.masterViewController!.showWebsite(urlstr: self.detailItem!.href)
     }
         
     // MARK: - Table View
@@ -161,6 +164,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     }
     
     func cookieValFromArray() -> String {
+        /*
         var str = ""
         
         let cookies_tmp = UserDefaults.standard.value(forKey: "cookies")
@@ -171,20 +175,17 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
             for (key, properties) in cookies {
                 str += key + "=" + (properties[HTTPCookiePropertyKey.value] as! String) + "; "
             }
-        }
-        
-        return str
+        }*/
+        return self.cookie_str!
     }
-    
+        
     func httpCookieFromArray() {
         let cookies_tmp = UserDefaults.standard.value(forKey: "cookies")
         
-        if (cookies_tmp != nil) {
-            let cookies = cookies_tmp as! Dictionary<String, [HTTPCookiePropertyKey : Any]>
-            
-            for (_, properties) in cookies {
-                HTTPCookieStorage.shared.setCookie(HTTPCookie.init(properties: properties)!)
-            }
+        let cookies = cookies_tmp as! Dictionary<String, [HTTPCookiePropertyKey : Any]>
+        
+        for (_, properties) in cookies {
+            HTTPCookieStorage.shared.setCookie(HTTPCookie.init(properties: properties)!)
         }
     }
 
@@ -201,14 +202,16 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         let object = objects[indexPath.row]
     
         let manager = SDWebImageManager.shared().imageDownloader
-        let cookieVal = cookieValFromArray()
         
+        let cookieVal = cookieValFromArray()
+            
         NSLog("@cookieval: " + cookieVal + ", url: " + object.img)
         
         manager?.setValue(cookieVal, forHTTPHeaderField: "Cookie")
-        httpCookieFromArray()
+        //httpCookieFromArray()
         
         cell.imageThumb.sd_setImage(with: URL(string: object.img)!, placeholderImage: nil, completed:{ (image, error, cacheType, url) -> Void in
+            
             if (error != nil) {
                 // set the placeholder image here
                 NSLog("@cellForRowAt Error: " + error.debugDescription)
@@ -221,7 +224,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
                     self.objects[indexPath.row].img_height = cell.frame.size.width * image!.size.height / image!.size.width
                     
                     tableView.beginUpdates()
-                    tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                    tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
                     tableView.endUpdates()
                 }
             }
@@ -246,7 +249,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         let cell = tableView.cellForRow(at: indexPath) as? DetailTableViewCell
         let originImage = cell?.imageThumb.image // some image for baseImage
         
-        httpCookieFromArray()
+        //httpCookieFromArray()
         
         var images = [SKPhoto]()
         for idx in 0...self.objects.count-1 {
@@ -316,13 +319,8 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
                         let alert = UIAlertController(title: "注意", message: "此項目相片必須於登入後才提供，要登入嗎？", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "登入", style: .default, handler: { (action) in
                             
-                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                            let loginViewController = storyboard.instantiateViewController(withIdentifier: "loginViewContainer") as? LoginViewController
+                            self.performSegue(withIdentifier: "login", sender: self)
                             
-                            //loginViewController?.callerController = self
-                            self.navigationController?.pushViewController(loginViewController!, animated: true)
-                            
-                            //self.tableView.reloadData()
                         }))
                         alert.addAction(UIAlertAction(title: "不登入", style: .default, handler: nil))
                         present(alert, animated: true, completion: nil)
@@ -342,7 +340,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
                                     imgsrc = path_prefix + imgsrc!
                                 }
                                 
-                                // NSLog(imgsrc!)
+                                NSLog("@image url: " + imgsrc!)
                                 
                                 objects.append(ImgModel(
                                     title: "",
@@ -378,10 +376,31 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         
         present(activityViewController, animated: true, completion: nil)
         
+        if (UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad) {
+            if (activityViewController.responds(to: #selector(getter: popoverPresentationController))) {
+                activityViewController.popoverPresentationController!.barButtonItem = sender;
+             }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         SDImageCache.shared().clearMemory()
+    }
+    
+    // MARK: - Segues
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        NSLog("segue id: " + segue.identifier!)
+        
+        if segue.identifier == "login" {
+            let loginViewController = segue.destination as? LoginViewController
+            
+            loginViewController!.callerController = self
+            loginViewController!.wkProcessPool = self.wkProcessPool
+        }
+    }
+    
+    @IBAction func unwind(unwindSegue: UIStoryboardSegue) {
+        NSLog("@unwind to DetailViewController")
     }
 }
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import SDWebImage
+import WebKit
 
 class MultipageViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
@@ -15,9 +16,14 @@ class MultipageViewController: UIViewController, UIPageViewControllerDataSource,
     var objects = [MasterViewController.Model]()
     var startIndex: NSInteger!
     var lastPendingViewControllerIndex: NSInteger?
+    var currentPageIndex: Int?
+    
+    var wkProcessPool: WKProcessPool!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NSLog("@MultipageViewController here")
         
         self.pageViewController = self.storyboard?.instantiateViewController(withIdentifier:"PageViewController") as? UIPageViewController
         self.pageViewController?.dataSource = self
@@ -26,13 +32,14 @@ class MultipageViewController: UIViewController, UIPageViewControllerDataSource,
         
         let startingViewController = self.viewControllerAtIndex(startIndex)
         let viewControllers: [UIViewController] = [startingViewController!]
-        self.pageViewController?.setViewControllers(viewControllers, direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
+        self.pageViewController?.setViewControllers(viewControllers, direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
         
         self.title = objects[startIndex].title
+        self.currentPageIndex = startIndex;
         
-        self.addChildViewController(self.pageViewController!)
+        self.addChild(self.pageViewController!)
         self.view.addSubview((self.pageViewController?.view)!)
-        self.pageViewController?.didMove(toParentViewController: self)
+        self.pageViewController?.didMove(toParent: self)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]){
@@ -46,6 +53,8 @@ class MultipageViewController: UIViewController, UIPageViewControllerDataSource,
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
         if completed{
+            self.currentPageIndex = lastPendingViewControllerIndex!
+            
             SDImageCache.shared().clearMemory()
             
             NSLog("@obj title: " + objects[lastPendingViewControllerIndex!].title)
@@ -90,6 +99,7 @@ class MultipageViewController: UIViewController, UIPageViewControllerDataSource,
         pageContentViewController.detailItem = self.objects[index]
         pageContentViewController.pageIndex = index
         pageContentViewController.multiController = self
+        pageContentViewController.wkProcessPool = self.wkProcessPool
         
         return pageContentViewController
     }

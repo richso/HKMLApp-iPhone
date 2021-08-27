@@ -118,10 +118,10 @@ class FBViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
         //forwardButton.isEnabled = false
 
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(self.refreshWebView), for: UIControlEvents.valueChanged)
+        refreshControl.addTarget(self, action: #selector(self.refreshWebView), for: UIControl.Event.valueChanged)
         webView.scrollView.addSubview(refreshControl)
         
-        let leftButton = UIBarButtonItem(title: "返回相集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goPhotoCollection(_:)))
+        let leftButton = UIBarButtonItem(title: "返回相集", style: UIBarButtonItem.Style.plain, target: self, action: #selector(goPhotoCollection(_:)))
         
         navigationItem.leftBarButtonItem = leftButton
     }

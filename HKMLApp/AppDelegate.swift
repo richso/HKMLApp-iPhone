@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         let splitViewController = window!.rootViewController as! UISplitViewController
         /*let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     
     // deep link call
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if (userActivity.activityType == NSUserActivityTypeBrowsingWeb) {
             let url = userActivity.webpageURL
             let urlstr = url?.absoluteString
@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             let wvViewController : WebviewController = board.instantiateViewController(withIdentifier: "webViewContainer") as! WebviewController
             let splitViewController = window!.rootViewController as! UISplitViewController
             
-            let model = MasterViewController.Model(title: "", img: "", href: urlstr!, author: "", author_href: "")
+            let model = MasterViewController.Model(title: "", img: "", href: urlstr!, author: "", author_href: "", masterViewController: nil)
             
             wvViewController.detailItem = model
             

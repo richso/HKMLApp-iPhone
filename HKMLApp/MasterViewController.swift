@@ -18,11 +18,14 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         var href: String
         var author: String
         var author_href: String
+        var masterViewController: MasterViewController? = nil
+        var index: Int? = nil
     }
 
     var detailViewController: MultipageViewController? = nil
     var objects = [Model]()
     var webView : WKWebView!
+    var wkProcessPool: WKProcessPool!
     
     let path_prefix = "http://www.hkml.net/Discuz/"
     let mainUrl = "http://www.hkml.net/Discuz/index.php"
@@ -31,9 +34,13 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
     let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/getTopModels.js"
     let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
     
+    var webviewController_url: String = "";
+    
     var userContentController : WKUserContentController!
     
     var sak: SwissArmyKnife?
+    
+    var unwindAction: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +52,8 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         refreshControl?.addTarget(self, action: #selector(refreshTableData(_:)), for: .valueChanged)
 
         let config = WKWebViewConfiguration()
+        self.wkProcessPool = WKProcessPool()
+        config.processPool = self.wkProcessPool
         userContentController = WKUserContentController()
         config.userContentController = userContentController
         webView = WKWebView(frame: CGRect.zero, configuration: config)
@@ -54,7 +63,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         userContentController.add(self, name: "hkmlApp")
         
         let filePath = Bundle.main.path(forResource: "jquery-1.12.4.min", ofType: "js")
-        var jquery = try? String(contentsOfFile: filePath!, encoding:String.Encoding.utf8) //try? String(contentsOf: URL(string: jqCDN)!, encoding: String.Encoding.utf8)
+        var jquery = try? String(contentsOfFile: filePath!, encoding:String.Encoding.utf8)
         
         jquery = (jquery!) + " $j=jQuery.noConflict();";
         let jqScript = WKUserScript(source: jquery!, injectionTime: .atDocumentStart, forMainFrameOnly: false)
@@ -86,11 +95,11 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         sak?.showActivityIndicator()
         webView.load(URLRequest(url:URL(string:topTenUrl)!))
 
-        let loginButton = UIBarButtonItem(title: NSLocalizedString("Login", comment: "Login"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(goLogin(_:)))
+        let loginButton = UIBarButtonItem(title: NSLocalizedString("Login", comment: "Login"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(goLogin(_:)))
         
         navigationItem.leftBarButtonItem = loginButton
         
-        let wsButton = UIBarButtonItem(title: " ", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goHome(_:)))
+        let wsButton = UIBarButtonItem(title: " ", style: UIBarButtonItem.Style.plain, target: self, action: #selector(goHome(_:)))
         
         navigationItem.rightBarButtonItem = wsButton
         
@@ -99,6 +108,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? MultipageViewController
         }
         
+        webviewController_url = mainUrl
     }
 
     @objc private func refreshTableData(_ sender: Any) {
@@ -118,30 +128,26 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
     
     @objc
     func goLogin(_ sender: Any) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let loginViewController = storyboard.instantiateViewController(withIdentifier: "loginViewContainer") as? LoginViewController
-        
-        self.navigationController?.pushViewController(loginViewController!, animated: true)
-        
+        performSegue(withIdentifier: "login", sender: self)
     }
+    
     @objc
     func goHome(_ sender: Any) {
         showWebsite(urlstr: mainUrl)
     }
+    
+    @IBAction func unwind(unwindSegue: UIStoryboardSegue) {
+        NSLog("@unwind to MasterViewController")
+    }
 
     public func showWebsite(urlstr: String) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let tabBarController = storyboard.instantiateViewController(withIdentifier:"tabViewController") as? UITabBarController
+        webviewController_url = urlstr
         
-        let wvViewController = tabBarController?.viewControllers![0] as? WebviewController
-        
-        let model = Model(title: "", img: "", href: urlstr, author: "", author_href: "")
-        
-        wvViewController?.detailItem = model
-        
-        self.navigationController?.pushViewController(tabBarController!, animated: true)
-        
+        if (UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad) {
+            performSegue(withIdentifier: "showWebsiteModal", sender: self)
+        } else {
+            performSegue(withIdentifier: "showWebsite", sender: self)
+        }
     }
     
     // MARK: - Segues
@@ -150,15 +156,36 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         
         if segue.identifier == "showDetail" {
             
-            detailViewController = segue.destination as? MultipageViewController //(segue.destination as! UINavigationController).topViewController as? DetailViewController
+            let navController = segue.destination as! UINavigationController
+            let detailViewController = navController.topViewController as! MultipageViewController
+                    
+            //detailViewController = segue.destination as? MultipageViewController
+            
+            detailViewController.objects = objects
+            detailViewController.startIndex = 0
             
             if let indexPath = tableView.indexPathForSelectedRow {
-                detailViewController?.objects = objects
-                detailViewController?.startIndex = indexPath.row
+                detailViewController.startIndex = indexPath.row
             }
             
-            detailViewController?.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-            detailViewController?.navigationItem.leftItemsSupplementBackButton = true
+            
+            detailViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+            detailViewController.navigationItem.leftItemsSupplementBackButton = true
+            detailViewController.wkProcessPool = self.wkProcessPool
+            
+        } else if segue.identifier == "showWebsite" || segue.identifier == "showWebsiteModal" {
+            
+            let tabBarController = segue.destination as? UITabBarController
+            let model = Model(title: "", img: "", href: webviewController_url, author: "", author_href: "", masterViewController: self)
+            
+            let wvViewController = tabBarController?.viewControllers![0] as? WebviewController
+            
+            wvViewController?.detailItem = model
+            wvViewController?.wkProcessPool = self.wkProcessPool
+        } else if segue.identifier == "login" {
+            let loginViewController = segue.destination as? LoginViewController
+            loginViewController!.masterController = self
+            loginViewController!.wkProcessPool = self.wkProcessPool
         }
     }
 
@@ -184,8 +211,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         let object = objects[indexPath.row]
         
         cell.title.text = object.title
-        //cell.imageThumb.downloadedFrom(url: URL(string: object.img)!)
-        cell.imageThumb.sd_setImage(with: URL(string: object.img)!, placeholderImage: nil, completed:nil)
+        cell.imageThumb.sd_setImage(with: URL(string: object.img)!, placeholderImage: nil)
         
         return cell
     }
@@ -195,8 +221,13 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
         return false
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         // reserved
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        performSegue(withIdentifier: "showDetail", sender: self)
     }
     
     // MARK: - webview
@@ -265,7 +296,9 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
                                 img: path_prefix + (modelSpec["img"] as? String)!,
                                 href: path_prefix + (modelSpec["href"] as? String)!,
                                 author: (modelSpec["author"] as? String)!,
-                                author_href: path_prefix + (modelSpec["author_href"] as? String)!
+                                author_href: path_prefix + (modelSpec["author_href"] as? String)!,
+                                masterViewController: self,
+                                index: i
                             ))
                         }
                     }

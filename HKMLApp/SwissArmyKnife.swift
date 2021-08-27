@@ -10,7 +10,7 @@ import UIKit
 class SwissArmyKnife {
     
     var loaderParentView: UIView?
-    var spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    var spinner = UIActivityIndicatorView(style: .whiteLarge)
     var loadingView: UIView = UIView()
     
     required init(loaderParentView: UIView) {
@@ -27,7 +27,7 @@ class SwissArmyKnife {
             self.loadingView.clipsToBounds = true
             self.loadingView.layer.cornerRadius = 10
             
-            self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+            self.spinner = UIActivityIndicatorView(style: .whiteLarge)
             self.spinner.frame = CGRect(x: 0.0, y: 0.0, width: 80.0, height: 80.0)
             self.spinner.center = CGPoint(x:self.loadingView.bounds.size.width / 2, y:self.loadingView.bounds.size.height / 2)
             

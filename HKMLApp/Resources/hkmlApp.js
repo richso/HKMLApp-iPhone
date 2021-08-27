@@ -44,6 +44,10 @@ $j(document).ready(function() {
         $('body center > div.tableborder').css('display', 'none');
         /* hide the model brands links panel */
         $('body center center').css('display', 'none');
+        
+        // 202101 add friend list to my menu
+        $('#my_menu > table > tbody').append('<tr><td class="popupmenu_option" style="opacity: 0.85;"><a href="memcp.php?action=buddylist">我的好友</a></td></tr>');
+        // -
        
         $('body > center > div.menu + div').css('display', 'none');
         
@@ -62,7 +66,7 @@ $j(document).ready(function() {
         
         $('body > center > div.menu a[href="my.php"]').attr('href', 'javascript:void(0);');
         
-        if (appvl_flag && userAgent.match(/iPhone/i)) {
+        if (appvl_flag && userAgent.match(/(iPhone|iPad)/i)) {
             $('body > center > div.menu').css('display', 'none');
         }
         
@@ -74,6 +78,8 @@ $j(document).ready(function() {
         
         /* check if index page */
         if (mainTable_q.length && /^index\.php$/.test(lastLocSeg)) {
+            $('tbody[id^="category_"] > tr.row > td[align="left"] > a > img').css('width', '').css('max-width', '100%');
+            
             var mainTable = mainTable_q[0];
             
             // new message boxes
@@ -154,11 +160,18 @@ $j(document).ready(function() {
             $('input[type="text"]').css('width', '100%');
         }
         
+        if (/^memcp\.php$/.test(lastLocSeg) && lastLocParams == 'action=buddylist') { 
+            var mt = $('.maintable')[2];
+            $('> table td[width="200"]', mt).css('display', 'none');
+            $('> table td a[target="_blank"]', mt).removeAttr('target');
+        }        
+        
         if (/^pm\.php$/.test(lastLocSeg)) { 
             var mt = $('.maintable')[2];
             
             $('> table > tbody > tr > td:first-child', mt).each(function(i, n){
-                var toggleDiv = $('<img id="foruminfo_img" src="images/d-xite_blue/collapsed_no.gif" style="position:absolute; border: none;">');
+                var toggleDiv = $('<img id="foruminfo_img" src="images/d-xite_blue/collapsed_yes.gif" style="position:absolute; border: none; width: 25px;">');
+                $('> div.spaceborder', n).css('display', 'none');
                 $(toggleDiv).on('click', function(){
                     $(toggleDiv).attr('src', $('> div.spaceborder', n).css('display') == 'none' ? 'images/d-xite_blue/collapsed_no.gif' : 'images/d-xite_blue/collapsed_yes.gif');
                     $('> div.spaceborder', n).toggle();
@@ -215,14 +228,39 @@ $j(document).ready(function() {
             }
 
             $('#smiliestable').insertAfter($('#postform [name="message"]').parent());
-            $('#smiliestable [id^="smilie_"]').removeAttr('onmouseover');
-            $('#smiliestable [id^="smilie_"]').removeAttr('onclick').on('click', function(){
-                var s = $('[name="message"]').prop("selectionStart");
-                var v = $('[name="message"]').val();
-                var newVal = v.substring(0, s) + $(this).attr('alt') + ' ' + v.substring(s, v.length);
-                $('[name="message"]').val(newVal).prop("selectionStart", s + $(this).attr('alt').length+1);
-                $('[name="message"]').focus().prop("selectionEnd", $('[name="message"]').prop("selectionStart"));
-            });
+            function hkmlInsertSmilies() {
+                $('#smiliestable [id^="smilie_"]').removeAttr('onmouseover');
+                $('#smiliestable [id^="smilie_"]').removeAttr('onclick').on('click', function(){
+                    var s = $('[name="message"]').prop("selectionStart");
+                    var v = $('[name="message"]').val();
+                    var newVal = v.substring(0, s) + $(this).attr('alt') + ' ' + v.substring(s, v.length);
+                    $('[name="message"]').val(newVal).prop("selectionStart", s + $(this).attr('alt').length+1);
+                    $('[name="message"]').focus().prop("selectionEnd", $('[name="message"]').prop("selectionStart"));
+                });
+                $('#smiliestable .p_bar a.p_num').removeAttr('onclick').on('click', hkmlSmilypageclick);
+            }
+            
+            function hkmlSmilypageclick(event){
+                event.preventDefault();
+                
+                getSmilies(event);
+                
+                setTimeout(function(){
+                    $('#smiliestable [id^="smilie_"]').removeAttr('onmouseover');
+                    $('#smiliestable [id^="smilie_"]').removeAttr('onclick').on('click', function(){
+                        var s = $('[name="message"]').prop("selectionStart");
+                        var v = $('[name="message"]').val();
+                        var newVal = v.substring(0, s) + $(this).attr('alt') + ' ' + v.substring(s, v.length);
+                        $('[name="message"]').val(newVal).prop("selectionStart", s + $(this).attr('alt').length+1);
+                        $('[name="message"]').focus().prop("selectionEnd", $('[name="message"]').prop("selectionStart"));
+                    });
+
+                    $('#smiliestable .p_bar a.p_num').removeAttr('onclick').on('click', hkmlSmilypageclick);
+                }, 500);
+                
+            }
+            
+            hkmlInsertSmilies();
         }
         
         /* apply to content page only */
@@ -239,11 +277,18 @@ $j(document).ready(function() {
                             if (j<4) {
                                 $(m).css('display', 'none');
                             }
-                            if (j==2 && /\.jpeg$/.test($(m).html())) {
+                            if (j==2 && /\.jpeg$/i.test($(m).html())) {
                                 $(n).append('<img src="'+$(m).attr('href')+'" style="width: 100%; height: auto;"/>');
                             }
                         });
                     })
+                }
+            });
+            var checkJpegs = $('.t_msgfont > span[id^="attach_"] > a[href^="attachment.php"]');
+            checkJpegs.each(function(idx, jpeg) {
+                if ($(jpeg).html().match(/\.jpeg$/i)) {
+                    $(jpeg).parent().removeAttr('onmouseover');
+                    $(jpeg).replaceWith('<img src="{{img}}" style="width: 100%; height: auto;"/>'.replace('{{img}}', $(jpeg).attr('href')));
                 }
             });
             
@@ -376,6 +421,16 @@ $j(document).ready(function() {
                     $(n).replaceWith('<div style="text-align: center;"><iframe webkit-playsinline width="'+vw+'" height="'+vh+'" src="https://www.youtube.com/embed/'+match[1]+'?playsinline=1" frameborder="0" allowfullscreen></iframe></div>');
                 }
             });
+            
+            try {
+                var w = $(window).width();
+                var vw = Math.max(w - 10, 200);
+                var vh = vw * 315 / 560;
+                var q = $('a[href$=".mp4"]');
+                q.each(function(i, n){
+                    $(n).replaceWith('<video style="background-color: black;" width="'+vw+'" height="'+vh+'" controls><source src="'+$(n).attr('href')+'" type="video/mp4"><a href="'+$(n).attr('href')+'">'+$(n).attr('href')+'</a></video>');
+                });
+            } catch(e) {}
             
             // unicode smilies from system
             $('.t_msgfont').each(function(i, n){
@@ -533,11 +588,11 @@ $j(document).ready(function() {
         try {
             var pmCheck = $('#pmprompt');
             
-            var d = $('<div style="position: fixed; bottom:0; width: calc(100% - 40px); height: 40px; background-color: #555555aa; opacity:1; padding: 0 20px;"></div>')
+            var d = $('<div style="position: fixed; bottom:0; width: calc(100% - 40px); height: 40px; background-color: #555555;  background-color: #555555aa; opacity:1; padding: 0 20px;"></div>')
                 .append('<a href="javascript:void(0);" onclick="window.history.back()" style="float: left; padding: 5px; font-size: 24px;">&#9664;</a>')
                 .append('<a href="javascript:void(0);" onclick="window.history.forward()" style="float: left; padding: 5px; font-size: 24px;">&#9654;</a>')
                 .append('<a href="javascript:void(0);" onclick="window.scrollTo(0,0);" style="float: left; padding: 5px; font-size: 24px; color: white;">&#8679;</a>')
-                .append('<a href="javascript:void(0);" onclick="window.scrollTo(0,document.body.scrollHeight);" style="float: left; padding: 5px; font-size: 24px; color: white;">&#8681;</a>')
+                .append('<a href="javascript:void(0);" onclick="htmlAppGoBottom();" style="float: left; padding: 5px; font-size: 24px; color: white;">&#8681;</a>')
                 .append('<a href="javascript:void(0);" onclick="location=\'./index.php\';" style="float: right; padding: 5px; font-size: 24px;">&#127968;</a>')
                 .append('<a href="facebookshare:'+location.href+'" style="float: right; padding: 5px; font-size: 24px;">&#11088;</a>');
             
@@ -545,9 +600,9 @@ $j(document).ready(function() {
                 d.append('<a href="pm.php" style="float: right; padding: 5px; font-size: 24px; color: red;">&#9993;</a>');
             }
         
-            d.append('<div style="clear: both;"></div>');
+            d.append('<div style="clear: both;" id="mobile_panel"></div>');
 
-            if (userAgent.match(/iPhone/i)) {
+            if (userAgent.match(/(iPhone|iPad)/i)) {
                 $('<div style="height: 60px;"></div>').appendTo('body');
                 if (!usrname) {
                     d = $('<div style="position: fixed; bottom:0; width: calc(100% - 40px); height: 40px; background-color: #eeeeee; padding: 0 20px; text-align: center;"></div>')
@@ -562,7 +617,7 @@ $j(document).ready(function() {
                 $('<div style="height: 60px;"></div>').appendTo('body');
                 d.appendTo('body');
             }
-        } catch (e) {}
+        } catch (e) {console.log('@error', e)}
         
         // cater for Android cannot auto-refresh
         try {
@@ -616,18 +671,46 @@ $j(document).ready(function() {
                 }
                 
                 $('#smiliestable').insertAfter($('#postform [name="message"]').parent());
-                $('#smiliestable [id^="smilie_"]').removeAttr('onmouseover');
-                $('#smiliestable [id^="smilie_"]').removeAttr('onclick').on('click', function(){
-                    var s = $('[name="message"]').prop("selectionStart");
-                    var v = $('[name="message"]').val();
-                    var newVal = v.substring(0, s) + $(this).attr('alt') + ' ' + v.substring(s, v.length);
-                    $('[name="message"]').val(newVal).prop("selectionStart", s + $(this).attr('alt').length+1);
-                    $('[name="message"]').focus().prop("selectionEnd", $('[name="message"]').prop("selectionStart"));
-                });
+                
+                function hkmlInsertSmilies() {
+                    $('#smiliestable [id^="smilie_"][onmouseover]').removeAttr('onmouseover');
+                    $('#smiliestable [id^="smilie_"][onclick]').removeAttr('onclick').on('click', function(){
+                        var s = $('[name="message"]').prop("selectionStart");
+                        var v = $('[name="message"]').val();
+                        var newVal = v.substring(0, s) + $(this).attr('alt') + ' ' + v.substring(s, v.length);
+                        $('[name="message"]').val(newVal).prop("selectionStart", s + $(this).attr('alt').length+1);
+                        $('[name="message"]').focus().prop("selectionEnd", $('[name="message"]').prop("selectionStart"));
+                    });
+
+                    $('#smiliestable .p_bar a.p_num[onclick]').removeAttr('onclick').on('click', hkmlSmilypageclick);                    
+                }
+                
+                function hkmlSmilypageclick(event){
+                    event.preventDefault();
+                    
+                    getSmilies(event);
+
+                    setTimeout(hkmlInsertSmilies, 500);
+                    
+                }
+
+                hkmlInsertSmilies();
+                
             } catch(e) {
                 //
             }
 
+        }
+        
+        htmlAppGoBottom = function () {
+            var ofs = $('#postform').offset();
+            if (ofs) {
+                window.scrollTo(0, ofs.top);
+            } else {
+                var mt = $('.maintable:visible');
+                ofs = $(mt[mt.length-1]).offset();
+                window.scrollTo(0, ofs.top);
+            }
         }
         
         function hkmlapp_replace_smilies(str) {

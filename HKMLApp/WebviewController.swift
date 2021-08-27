@@ -21,15 +21,12 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
     let hkmlAppJs = "https://raw.githubusercontent.com/richso/hkmlApp/master/public_html/hkmlApp.js"
     let jqCDN = "http://code.jquery.com/jquery-1.12.4.min.js"
     var targetUrl = ""
+    var wkProcessPool: WKProcessPool?
     
     var parentController: DetailViewController!
     
-    //@IBOutlet weak var backButton: UIBarButtonItem!
-    //@IBOutlet weak var forwardButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
     
-    //var userContentController : WKUserContentController!
-
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
@@ -62,6 +59,7 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
         
         let config = webView.configuration
         
+        config.processPool = self.wkProcessPool!
         config.userContentController.add(self, name: "hkmlAppCookie")
         config.userContentController.add(self, name: "hkmlAppThumbnail")
 
@@ -108,32 +106,15 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
         
         NSLog("@didload: " + targetUrl)
         
-        let cookies_tmp = UserDefaults.standard.value(forKey: "cookies")
-        
-        if (cookies_tmp != nil) {
-            let cookies = cookies_tmp as! Dictionary<String, [HTTPCookiePropertyKey : Any]>
-        
-            for (key, properties) in cookies {
-                let cookie = HTTPCookie(properties: properties)
-                
-                NSLog("@key: " + key)
-                
-                WKWebsiteDataStore.default().httpCookieStore.setCookie(cookie!, completionHandler: nil)
-            }
-        }
-        
         let urlRequest = URLRequest(url:URL(string:targetUrl)!)
         
         webView.load(urlRequest)
         
-        //backButton.isEnabled = false
-        //forwardButton.isEnabled = false
-
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(self.refreshWebView), for: UIControlEvents.valueChanged)
+        refreshControl.addTarget(self, action: #selector(self.refreshWebView), for: UIControl.Event.valueChanged)
         webView.scrollView.addSubview(refreshControl)
         
-        let leftButton = UIBarButtonItem(title: "返回相集", style: UIBarButtonItemStyle.plain, target: self, action: #selector(goPhotoCollection(_:)))
+        let leftButton = UIBarButtonItem(title: "返回相集", style: UIBarButtonItem.Style.plain, target: self, action: #selector(goPhotoCollection(_:)))
         
         navigationItem.leftBarButtonItem = leftButton
     }
@@ -151,21 +132,6 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
         webView.reload()
         sender.endRefreshing()
     }
-
-    /*
-    @IBAction func back(sender: UIBarButtonItem) {
-        webView.goBack()
-    }
-    
-    @IBAction func forward(sender: UIBarButtonItem) {
-        webView.goForward()
-    }
-     
-     @IBAction func home(sender: UIBarButtonItem) {
-         let request = URLRequest(url: URL(string:mainUrl)!)
-         webView.load(request)
-     }
-    */
     
     @IBAction func share(sender: UIBarButtonItem) {
         let activityViewController = UIActivityViewController(
@@ -174,6 +140,11 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
         
         present(activityViewController, animated: true, completion: nil)
         
+        if (UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad) {
+            if (activityViewController.responds(to: #selector(getter: popoverPresentationController))) {
+                activityViewController.popoverPresentationController!.barButtonItem = sender;
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -183,15 +154,14 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if (keyPath == "loading") {
-            //backButton.isEnabled = webView.canGoBack
-            //forwardButton.isEnabled = webView.canGoForward
+            // do nothing
         }
         if (keyPath == "estimatedProgress") {
             progressView.isHidden = webView.estimatedProgress == 1
             progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         }
         if (keyPath == "title") {
-            //title = webView.title
+            // do nothing
         }
     }
     
@@ -221,16 +191,20 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
                 
                 NSLog("shareUrl: " + shareurl)
                 
-                /*
-                let linkShareCnt = LinkShareContent(url: URL(string:shareurl)!)
-                
-                try! ShareDialog.show(from: self, content: linkShareCnt)
-                */
                 let activityViewController = UIActivityViewController(
                     activityItems: [URL(string: shareurl) ?? ""],
                     applicationActivities:nil)
                 
                 present(activityViewController, animated: true, completion: nil)
+                
+                if (UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad) {
+                    if (activityViewController.responds(to: #selector(getter: popoverPresentationController))) {
+                        let visibleRect = self.view.frame.intersection(self.view.superview!.bounds)
+                        activityViewController.popoverPresentationController!.sourceView = self.webView
+                        activityViewController.popoverPresentationController!.sourceRect = CGRect(x: visibleRect.width / 2, y: visibleRect.origin.y + 20, width: 1, height: 1)
+                        
+                    }
+                }
 
                 decisionHandler(WKNavigationActionPolicy.cancel)
                 
@@ -240,7 +214,7 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
                 
                 if (fbViewController?.webView == nil) {
                     let urlstr = navigationAction.request.url?.absoluteString
-                    let model = MasterViewController.Model(title: "", img: "", href: urlstr!, author: "", author_href: "")
+                    let model = MasterViewController.Model(title: "", img: "", href: urlstr!, author: "", author_href: "", masterViewController: nil)
                     fbViewController?.detailItem = model
                 } else {
                     fbViewController?.webView.load(URLRequest(url: navigationAction.request.url!))
@@ -320,36 +294,10 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
     
     func userContentController(_ userContentController: WKUserContentController, didReceive: WKScriptMessage) {
         
-        if (didReceive.name == "hkmlAppCookie") {
-            // reserve for future use
-            if let d = didReceive.body as? [[String: String]] {
-                var dic = Dictionary<String, [HTTPCookiePropertyKey: Any]>()
-                
-                NSLog("@cookies before stored to default store")
-                
-                var dateComponent = DateComponents()
-                dateComponent.day = 365
-                
-                for cookie in d {
-                    if (cookie["name"]!.hasPrefix("ppl_")) {
-                        dic[cookie["name"]!] = [HTTPCookiePropertyKey: Any]()
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.name] = cookie["name"]
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.value] = cookie["value"]
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.path] = "/Discuz/"
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.domain] = "hkml.net"
-                        dic[cookie["name"]!]![HTTPCookiePropertyKey.expires] = Calendar.current.date(byAdding: dateComponent, to: Date())
-                    }
-                }
-                UserDefaults.standard.set(dic, forKey:"cookies")
-                UserDefaults.standard.synchronize()
-                NSLog("@cookies stored to default store")
-            }
-        }
-        
         if (didReceive.name == "hkmlAppThumbnail") {
             NSLog("@Photo Slide")
             
-            httpCookieFromArray()
+            //httpCookieFromArray()
             
             if let d = didReceive.body as? [String: Any] {
                 let curIdx = d["idx"] as? NSInteger
@@ -374,6 +322,7 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
         }
     }
     
+    /*
     func httpCookieFromArray() {
         let cookies_tmp = UserDefaults.standard.value(forKey: "cookies")
         
@@ -384,6 +333,6 @@ class WebviewController: UIViewController, WKNavigationDelegate, WKUIDelegate, W
                 HTTPCookieStorage.shared.setCookie(HTTPCookie.init(properties: properties)!)
             }
         }
-    }
+    } */
 }
 
