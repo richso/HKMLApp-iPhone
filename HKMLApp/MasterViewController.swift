@@ -123,7 +123,7 @@ class MasterViewController: UITableViewController, WKNavigationDelegate, WKUIDel
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        SDImageCache.shared().clearMemory()
+        SDImageCache.shared.clearMemory()
     }
     
     @objc

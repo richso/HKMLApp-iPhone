@@ -55,7 +55,7 @@ class MultipageViewController: UIViewController, UIPageViewControllerDataSource,
         if completed{
             self.currentPageIndex = lastPendingViewControllerIndex!
             
-            SDImageCache.shared().clearMemory()
+            SDImageCache.shared.clearMemory()
             
             NSLog("@obj title: " + objects[lastPendingViewControllerIndex!].title)
             self.title = objects[lastPendingViewControllerIndex!].title

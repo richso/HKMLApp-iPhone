@@ -18,7 +18,7 @@ class SDToSKCache: SKImageCacheable {
     var cache: SDImageCache
     
     required init() {
-        cache = SDImageCache.shared()
+        cache = SDImageCache.shared
     }
     
     func imageForKey(_ key: String) -> UIImage? {

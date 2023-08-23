@@ -133,7 +133,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-        SDImageCache.shared().clearMemory()
+        SDImageCache.shared.clearMemory()
     }
     
     @IBAction
@@ -201,13 +201,15 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
 
         let object = objects[indexPath.row]
     
-        let manager = SDWebImageManager.shared().imageDownloader
+        //let manager = SDWebImageManager.shared.imageDownloader
+        let manager = SDWebImageDownloader.shared
         
         let cookieVal = cookieValFromArray()
             
         NSLog("@cookieval: " + cookieVal + ", url: " + object.img)
         
-        manager?.setValue(cookieVal, forHTTPHeaderField: "Cookie")
+        manager.setValue(cookieVal, forHTTPHeaderField: "Cookie")
+        
         //httpCookieFromArray()
         
         cell.imageThumb.sd_setImage(with: URL(string: object.img)!, placeholderImage: nil, completed:{ (image, error, cacheType, url) -> Void in
@@ -247,7 +249,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as? DetailTableViewCell
-        let originImage = cell?.imageThumb.image // some image for baseImage
+        //let originImage = cell?.imageThumb.image // some image for baseImage
         
         //httpCookieFromArray()
         
@@ -258,8 +260,10 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
             photo.shouldCachePhotoURLImage = true
         }
         
-        let browser = SKPhotoBrowser(originImage: originImage ?? UIImage(), photos: images, animatedFromView: cell!)
-        browser.initializePageIndex(indexPath.row)
+        //let browser = SKPhotoBrowser(originImage: originImage ?? UIImage(), photos: images, animatedFromView: cell!)
+        let browser = SKPhotoBrowser(photos: images,
+                                     initialPageIndex: indexPath.row)
+        //browser.initializePageIndex(indexPath.row)
         present(browser, animated: true, completion: {})
     }
 
@@ -384,7 +388,7 @@ class DetailViewController: UIViewController, WKNavigationDelegate, WKUIDelegate
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        SDImageCache.shared().clearMemory()
+        SDImageCache.shared.clearMemory()
     }
     
     // MARK: - Segues

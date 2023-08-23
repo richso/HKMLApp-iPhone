@@ -7,6 +7,9 @@
 //
 
 import UIKit
+#if canImport(SKPhotoBrowserObjC)
+import SKPhotoBrowserObjC
+#endif
 
 @objc public protocol SKPhotoProtocol: NSObjectProtocol {
     var index: Int { get set }
@@ -69,6 +72,27 @@ open class SKPhoto: NSObject, SKPhotoProtocol {
     open func loadUnderlyingImageAndNotify() {
         guard photoURL != nil, let URL = URL(string: photoURL) else { return }
         
+        if self.shouldCachePhotoURLImage {
+            if SKCache.sharedCache.imageCache is SKRequestResponseCacheable {
+                let request = URLRequest(url: URL)
+                if let img = SKCache.sharedCache.imageForRequest(request) {
+                    DispatchQueue.main.async {
+                        self.underlyingImage = img
+                        self.loadUnderlyingImageComplete()
+                    }
+                    return
+                }
+            } else {
+                if let img = SKCache.sharedCache.imageForKey(photoURL) {
+                    DispatchQueue.main.async {
+                        self.underlyingImage = img
+                        self.loadUnderlyingImageComplete()
+                    }
+                    return
+                }
+            }
+        }
+
         // Fetch Image
         let session = URLSession(configuration: SKPhotoBrowserOptions.sessionConfiguration)
             var task: URLSessionTask?
