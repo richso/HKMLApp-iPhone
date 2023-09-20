@@ -9,3 +9,5 @@ if the Xcode complain that some libraries / frameworks package are missing, pls 
 
 Enjoy!!!
 
+*** Next version change to SwiftUI technology, see: https://github.com/richso/HKML-iPhone-SwiftUI
+
